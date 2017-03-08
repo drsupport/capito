@@ -1,0 +1,6 @@
+User-Agent: *
+Disallow: 
+Allow: /ru/about
+Host: http://artdouble.ru
+
+Sitemap: http://artdouble.ru/sitemap.xml

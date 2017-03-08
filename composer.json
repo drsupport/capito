@@ -1,0 +1,8 @@
+{
+	"autoload": {
+		"classmap": ["lib/"]
+	},
+    "require": {
+    	"bcosca/fatfree": "^3.5"
+    }
+}

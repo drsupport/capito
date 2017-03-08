@@ -1,0 +1,22 @@
+{
+  "name": "public_html",
+  "homepage": "https://github.com/drsupport/teasers",
+  "authors": [
+    "drsupport <help@dr.support>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "cdn/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "flat-admin-bootstrap-templates": "git://github.com/tui2tone/flat-admin-bootstrap-templates.git#dev-v2"
+  }
+}

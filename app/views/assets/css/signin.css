@@ -1,0 +1,33 @@
+.signin-in{
+	position: relative;	
+}
+.signin {
+	display: block;
+	position: relative;
+}
+.signin-in .preloader {
+	display: none;
+	position: absolute;
+	top:0px;
+	left:0px;
+ 	height: 100%;
+    width: 100%;
+	z-index: 99;
+	background:rgba(255,255,255,1);
+	text-align: center;
+}
+.signin-in .preloader img {
+	display: block;
+	position: absolute;
+	top:50%;
+	left:50%;
+ 	height: 64px;
+    width: 64px;
+    margin-top:-32px;
+    margin-left:-32px;
+}
+.flat-blue .btn.btn-info {
+    background-color: #ff8400;
+    color: #FFF;
+    border-color: #ff8400;
+}
