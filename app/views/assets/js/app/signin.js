@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function(){
         var arg = serialize(this);            
         ajax('../signin', arg, function(data){
             p.style.display = 'none' 
-            if (data['response']['success']) {                   
+            if (data['response']['success']) {             
                 window.location = "../admin";
             } else {
 

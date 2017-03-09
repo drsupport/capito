@@ -1,0 +1,47 @@
+<include href="admin/header.html" />
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="side-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card margin-top">
+                    <div class="card-header">
+
+                        <div class="card-title">
+                        <div class="title">Лог</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Скриншот</th>
+                                    <th>Задача</th>
+                                    <th>Процесс</th>
+                                    <th>Дата</th>
+                                    <th>Статус проверки</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <repeat group="{{ @logs }}" value="{{ @log }}">
+                                <tr>        
+                                    <td><a href="../log/{{ @log.id }}.png" target="_blank">#{{ @log.id }}</a></td>
+                                    <td>Еженедельный</td>
+                                    <td>YWS</td>
+                                    <td>{{ @log.datetime }}</td>          
+                                    <td>
+                                    <check if="{{ @log.status == 1}}"><true><span style="color:#1ABC9C">Success</span></true></check>
+                                    <check if="{{ @log.status == 0}}"><true><span style="color:#FA2A00">Rejected</span></true></check>
+                                    </td>
+                                </tr>
+                                </repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<include href="admin/footer.html" />

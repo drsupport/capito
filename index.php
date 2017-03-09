@@ -23,6 +23,9 @@
     require_once(__DIR__.'/app/controllers/Admin.php');
     require_once(__DIR__.'/app/controllers/Site.php');
     require_once(__DIR__.'/app/controllers/User.php');
+    require_once(__DIR__.'/app/controllers/Stat.php');
+    require_once(__DIR__.'/app/controllers/YWS.php');
+    require_once(__DIR__.'/app/controllers/Log.php');
 
     $f3 = \Base::instance();    
     $f3->config('app/config/system.cfg');         

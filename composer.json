@@ -1,8 +1,50 @@
-{
+//add extension = "bz2.so" php.ini
+{	
+	"minimum-stability": "dev",
 	"autoload": {
 		"classmap": ["lib/"]
 	},
+    "repositories": [
+	    {
+	        "type": "package",
+	        "package": {
+	            "name": "ipgeobase/data",
+	            "version": "1.0",
+	            "dist": {
+	                "url": "http://ipgeobase.ru/files/db/Main/geo_files.zip",
+	                "type": "zip"
+	            }
+	        }
+	    },
+	    {
+	        "type": "package",
+	        "package": {
+	            "name": "ariya/phantomjs",
+	            "version": "2.1.1",
+	            "dist": {
+	                "url": "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2",
+	                "type": "tar"
+	            }
+	        }
+	    },
+	    {
+	        "type":"package",
+	        "package": {
+	          "name": "ivansky/php-yandex-wordstat",
+	          "version":"master",
+	          "source": {
+	              "url": "https://github.com/ivansky/php-yandex-wordstat.git",
+	              "type": "git",
+	              "reference":"master"
+	            }
+	        }
+	    }
+    ],
     "require": {
-    	"bcosca/fatfree": "^3.5"
+    	"bcosca/fatfree": "^3.5",
+        "hundredminds/ipgeobase": "^1.03",
+        "ipgeobase/data" : "1.0",
+        "ariya/phantomjs" : "2.1.1",
+        "ivansky/php-yandex-wordstat" : "master"
     }
 }

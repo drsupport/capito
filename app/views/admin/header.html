@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Capito. Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/lib/css/select2.min.css">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" href="../cdn/flat-admin-bootstrap-templates/dist/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../app/views/assets/css/flat-blue.css">
+
+
+</head>
+
+<body class="flat-blue">
+    <div class="app-container">
+        <div class="row content-container">
+            <nav class="navbar navbar-default navbar-fixed-top navbar-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-expand-toggle">
+                            <i class="fa fa-bars icon"></i>
+                        </button>
+                        <ol class="breadcrumb navbar-breadcrumb hidden">
+                            <li class="active">Dashboard</li>
+                        </ol>
+                        <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                            <i class="fa fa-th icon"></i>
+                        </button>
+                    </div>
+                    <style>
+                        .fa-send:before, .fa-paper-plane:before {
+                            padding: 0 2px;
+                            color:transparent;
+                            background: url('../app/views/assets/images/brand.png') center center no-repeat ;   
+                        }
+                    </style>
+                    <ul class="nav navbar-nav navbar-right">
+                        <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                            <i class="fa fa-times icon"></i>
+                        </button>
+                        <li class="dropdown profile">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">root <span class="caret"></span></a>
+                            <ul class="dropdown-menu animated fadeInDown">
+                                <li class="profile-img">
+                                    <img src="../cdn/flat-admin-bootstrap-templates/dist/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
+                                </li>
+                                <li>
+                                    <div class="profile-info">
+                                        <h4 class="username">root</h4>
+                                        <div class="btn-group margin-bottom-2x" role="group">
+                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i> Настройки профиля</button>
+                                            <a type="button" class="btn btn-default" href="/logout"><i class="fa fa-sign-out"></i> Выход</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <style>
+                .navbar-nav .active a {
+                    background-color: #414954!important;
+                    color: #fff!important;
+                }
+                .margin-top{
+                    margin-top: 15px;   
+                }                
+            </style>
+            <div class="side-menu sidebar-inverse">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="side-menu-container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">
+                                <div class="icon fa fa-paper-plane"></div>
+                                <div class="title">Сapito <sup>Beta</sup></div>
+                            </a>
+                            <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                                <i class="fa fa-times icon"></i>
+                            </button>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="/admin/stat">
+                                    <span class="icon fa fa-bar-chart"></span><span class="title">Статистика</span>
+                                </a>
+                            </li>  
+                            <li>
+                                <a href="index.html">
+                                    <span class="icon fa fa-briefcase"></span><span class="title">Офферы</span>
+                                </a>
+                            </li>  
+                            <li>
+                                <a href="/admin/log">
+                                    <span class="icon fa fa-history"></span><span class="title">Лог</span>
+                                </a>
+                            </li> 
+                            <li>
+                                <a href="index.html">
+                                    <span class="icon fa fa-tasks"></span><span class="title">Задачи</span>
+                                </a>
+                            </li> 
+                            <li>
+                                <a href="index.html">
+                                    <span class="icon fa fa-cog"></span><span class="title">Парсеры</span>
+                                </a>
+                            </li>                   
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </nav>
+            </div>

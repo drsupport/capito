@@ -20,8 +20,7 @@ class AdminController extends Controller {
         }
     }
     function index() {
-        $template = \Template::instance();       
-        echo $template->render('admin.html');
+        $this->f3->reroute('/admin/stat');
     }
     function emulate() {
         $this->auth('1', '2');
