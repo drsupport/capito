@@ -18,6 +18,32 @@ class AdminController extends Controller {
             echo $template->render('login.html');
             die();
         }
+
+        $nav = [];
+        $path = explode('/', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        $path[sizeof($path)-1];
+        $nav['stat']['href'] = '/admin/stat';
+        $nav['stat']['class'] = '';
+        $nav['stat']['icon'] = 'fa-bar-chart';
+        $nav['stat']['title'] = 'Статистика';
+        $nav['offers']['href'] = '#';
+        $nav['offers']['class'] = '';
+        $nav['offers']['icon'] = 'fa-briefcase';
+        $nav['offers']['title'] = 'Офферы';
+        $nav['log']['href'] = '/admin/log';
+        $nav['log']['class'] = '';
+        $nav['log']['icon'] = 'fa-history';
+        $nav['log']['title'] = 'Лог';
+        $nav['tasks']['href'] = '#';
+        $nav['tasks']['class'] = '';
+        $nav['tasks']['icon'] = 'fa-tasks';
+        $nav['tasks']['title'] = 'Задачи';
+        $nav['cog']['href'] = '#';
+        $nav['cog']['class'] = '';
+        $nav['cog']['icon'] = 'fa-cog';
+        $nav['cog']['title'] = 'Парсеры';
+        $nav[$path[sizeof($path)-1]]['class'] = 'class=active';
+        $this->f3->set('nav_list', $nav);  
     }
     function index() {
         $this->f3->reroute('/admin/stat');

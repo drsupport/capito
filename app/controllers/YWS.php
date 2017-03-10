@@ -5,6 +5,10 @@ class YWSController extends Controller {
 		$data = $this->get($url);
 		return $data; 
 	} 
+	function isJson($string) {
+		json_decode($string);
+		return (json_last_error() == JSON_ERROR_NONE);
+	}
 	function get($url) {
 		$ch = curl_init ();
 		curl_setopt ($ch, CURLOPT_URL, $url);
@@ -21,24 +25,33 @@ class YWSController extends Controller {
     function index() {
     	/*require_once(__DIR__.'../../../vendor/ivansky/php-yandex-wordstat/YADWord.php');
     	require_once(__DIR__.'../../../vendor/ivansky/php-yandex-wordstat/YADWordstat.php');*/
-    	//print_r($this->parse_wordstat('пиджеум')); 
 
+    	$this->db->exec("TRUNCATE TABLE  `tbl_logs`");
+    	$this->db->exec("TRUNCATE TABLE  `tbl_stats`");    	
+
+    	$word = $this->db->exec("SELECT * FROM  `tbl_words` LIMIT 1;")[0];
+    	if(!$word) $this->pushJSON(false, "words empty");
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
-		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`) VALUES ( NULL , '".$time."', '1' );");
-		$log_id = $this->db->lastInsertId();
+		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`) VALUES ( NULL , '".$time."', '0' );");
+		$log = $this->db->lastInsertId();	
 
-		echo shell_exec('./vendor/ariya/phantomjs/bin/phantomjs yws.js пиджеум '.$log_id.' 2>&1');
+ 		//foreach ($words as $key=>$word) {   } 
+ 		putenv('LANG=en_US.UTF-8'); 
+        $response = shell_exec('./vendor/ariya/phantomjs/bin/phantomjs yws.js '.$word['name'].' '.$log.' 2>&1'); 
+
+        if(empty($response) OR !$this->isJson($response)) $response = '';        
+        $this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '".strval(empty($response) ? '-1' : '1')."' WHERE  `tbl_logs`.`id` =".$log.";");   
+
+        $response = json_decode($response);
+        $this->db->exec("INSERT IGNORE INTO  `tbl_stats` (`id`, `datetime`, `word`, `device`, `geo`, `impressions`) VALUES (NULL, '".date("Y-m-d 00:00", strtotime($response->datetime))."', '".$word['id']."', NULL, NULL, '".$response->impressions."');");
+
+		
 
 
 		//print_r($response);
 
     	/*
-    	$words = $this->db->exec("SELECT * FROM  `tbl_words`;");
-    	if(!$words) $this->pushJSON(false, "words empty");
 
- 		foreach ($words as $key=>$word) {              
- 			print_r($word);
-        } 
     	die();
 
     	

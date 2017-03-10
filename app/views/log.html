@@ -30,8 +30,9 @@
                                     <td>YWS</td>
                                     <td>{{ @log.datetime }}</td>          
                                     <td>
-                                    <check if="{{ @log.status == 1}}"><true><span style="color:#1ABC9C">Success</span></true></check>
-                                    <check if="{{ @log.status == 0}}"><true><span style="color:#FA2A00">Rejected</span></true></check>
+                                    <check if="{{ @log.status == 1}}"><true><span style="color:#1ABC9C">approved</span></true></check>
+                                    <check if="{{ @log.status == -1}}"><true><span style="color:#FA2A00">rejected</span></true></check>
+                                    <check if="{{ @log.status == 0}}"><true><span style="color:#ffb400">pending</span></true></check>
                                     </td>
                                 </tr>
                                 </repeat>

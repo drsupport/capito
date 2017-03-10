@@ -8,7 +8,7 @@
                     <div class="card-header">
 
                         <div class="card-title">
-                        <div class="title">Офферы</div>
+                        <div class="title">Статистика</div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -16,18 +16,20 @@
                             <thead>
                                 <tr>
                                     <th>Оффер</th>
-                                    <th>Слова</th>
-                                    <th>Дата последней проверки</th>
-                                    <th>Динамика показов</th>
+                                    <th>Слово</th>
+                                    <th>Последнее обновление</th>
+                                    <th>Показы</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Пиджеум</td>
-                                    <td>12</td>
-                                    <td>9.03.2017</td>
-                                    <td><i class="fa fa-arrow-up" aria-hidden="true" style="color:#1ABC9C;"></i> 15700</td>
+                                <repeat group="{{ @stats }}" value="{{ @stat }}">
+                                <tr>        
+                                    <td>{{ @stat.product }}</td>                
+                                    <td>{{ @stat.word }}</td>
+                                    <td>{{ @stat.datetime }}</td>
+                                    <td><i class="fa fa-arrow-up" aria-hidden="true" style="color:#1ABC9C;"></i> {{ @stat.impressions }}</td>
                                 </tr>
+                                </repeat>
                             </tbody>
                         </table>
                     </div>

@@ -78,7 +78,7 @@
                 .margin-top{
                     margin-top: 15px;   
                 }                
-            </style>
+            </style>            
             <div class="side-menu sidebar-inverse">
                 <nav class="navbar navbar-default" role="navigation">
                     <div class="side-menu-container">
@@ -92,31 +92,13 @@
                             </button>
                         </div>
                         <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a href="/admin/stat">
-                                    <span class="icon fa fa-bar-chart"></span><span class="title">Статистика</span>
-                                </a>
-                            </li>  
-                            <li>
-                                <a href="index.html">
-                                    <span class="icon fa fa-briefcase"></span><span class="title">Офферы</span>
-                                </a>
-                            </li>  
-                            <li>
-                                <a href="/admin/log">
-                                    <span class="icon fa fa-history"></span><span class="title">Лог</span>
-                                </a>
-                            </li> 
-                            <li>
-                                <a href="index.html">
-                                    <span class="icon fa fa-tasks"></span><span class="title">Задачи</span>
-                                </a>
-                            </li> 
-                            <li>
-                                <a href="index.html">
-                                    <span class="icon fa fa-cog"></span><span class="title">Парсеры</span>
-                                </a>
-                            </li>                   
+                            <repeat group="{{ @nav_list }}" value="{{ @nav_item }}">
+                                <li {{ @nav_item.class }}>
+                                    <a href="{{ @nav_item.href }}">
+                                        <span class="icon fa {{ @nav_item.icon }}"></span><span class="title">{{ @nav_item.title }}</span>
+                                    </a>
+                                </li>  
+                            </repeat>                                    
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
