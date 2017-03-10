@@ -27,7 +27,7 @@ class AdminController extends Controller {
         $nav['stat']['icon'] = 'fa-bar-chart';
         $nav['stat']['title'] = 'Статистика';
         $nav['offers']['href'] = '#';
-        $nav['offers']['class'] = '';
+        $nav['offers']['class'] = 'class=disabled';
         $nav['offers']['icon'] = 'fa-briefcase';
         $nav['offers']['title'] = 'Офферы';
         $nav['log']['href'] = '/admin/log';
@@ -35,11 +35,11 @@ class AdminController extends Controller {
         $nav['log']['icon'] = 'fa-history';
         $nav['log']['title'] = 'Лог';
         $nav['tasks']['href'] = '#';
-        $nav['tasks']['class'] = '';
+        $nav['tasks']['class'] = 'class=disabled';
         $nav['tasks']['icon'] = 'fa-tasks';
         $nav['tasks']['title'] = 'Задачи';
         $nav['cog']['href'] = '#';
-        $nav['cog']['class'] = '';
+        $nav['cog']['class'] = 'class=disabled';
         $nav['cog']['icon'] = 'fa-cog';
         $nav['cog']['title'] = 'Парсеры';
         $nav[$path[sizeof($path)-1]]['class'] = 'class=active';

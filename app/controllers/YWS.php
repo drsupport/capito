@@ -26,10 +26,12 @@ class YWSController extends Controller {
     	/*require_once(__DIR__.'../../../vendor/ivansky/php-yandex-wordstat/YADWord.php');
     	require_once(__DIR__.'../../../vendor/ivansky/php-yandex-wordstat/YADWordstat.php');*/
 
-    	$this->db->exec("TRUNCATE TABLE  `tbl_logs`");
-    	$this->db->exec("TRUNCATE TABLE  `tbl_stats`");    	
+    	/*$this->db->exec("TRUNCATE TABLE  `tbl_logs`");
+    	$this->db->exec("TRUNCATE TABLE  `tbl_stats`");*/    	
+ 		
+ 		//$this->f3->get('PARAMS.id');
 
-    	$word = $this->db->exec("SELECT * FROM  `tbl_words` LIMIT 1;")[0];
+    	$word = $this->db->exec("SELECT tbl_words.name, tbl_words.id, stat.datetime FROM tbl_words LEFT JOIN( SELECT tbl_stats.datetime, tbl_stats.word FROM tbl_stats ORDER BY tbl_stats.datetime DESC LIMIT 1) AS stat ON stat.word = tbl_words.id ORDER BY stat.datetime ASC LIMIT 1")[0];
     	if(!$word) $this->pushJSON(false, "words empty");
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
 		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`) VALUES ( NULL , '".$time."', '0' );");

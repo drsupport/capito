@@ -15,11 +15,11 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Скриншот</th>
-                                    <th>Задача</th>
+                                    <th>Результат</th>
+                                    <th>Переодичность</th>
                                     <th>Процесс</th>
                                     <th>Дата</th>
-                                    <th>Статус проверки</th>
+                                    <th>Статус</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -27,7 +27,7 @@
                                 <tr>        
                                     <td><a href="../log/{{ @log.id }}.png" target="_blank">#{{ @log.id }}</a></td>
                                     <td>Еженедельный</td>
-                                    <td>YWS</td>
+                                    <td>Yandex.Wordstat</td>
                                     <td>{{ @log.datetime }}</td>          
                                     <td>
                                     <check if="{{ @log.status == 1}}"><true><span style="color:#1ABC9C">approved</span></true></check>

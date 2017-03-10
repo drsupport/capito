@@ -18,3 +18,4 @@ jQuery(document).ready(function($) {
 jQuery(window).load(function(){
 	$(window).trigger('resize.eq-height');
 });
+

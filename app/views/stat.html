@@ -16,7 +16,7 @@
                             <thead>
                                 <tr>
                                     <th>Оффер</th>
-                                    <th>Слово</th>
+                                    <th>Слова</th>
                                     <th>Последнее обновление</th>
                                     <th>Показы</th>
                                 </tr>
@@ -25,7 +25,7 @@
                                 <repeat group="{{ @stats }}" value="{{ @stat }}">
                                 <tr>        
                                     <td>{{ @stat.product }}</td>                
-                                    <td>{{ @stat.word }}</td>
+                                    <td>{{ @stat.words }}</td>
                                     <td>{{ @stat.datetime }}</td>
                                     <td><i class="fa fa-arrow-up" aria-hidden="true" style="color:#1ABC9C;"></i> {{ @stat.impressions }}</td>
                                 </tr>
