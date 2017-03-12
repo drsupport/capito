@@ -7,7 +7,7 @@
                 <div class="card margin-top">
                     <div class="card-header">
                         <div class="card-title">
-                            <div class="title">Статистика</div>
+                            <div class="title">Офферы</div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -16,26 +16,13 @@
                                 <tr>
                                     <th>Оффер</th>
                                     <th>Слова</th>
-                                    <th>Последнее обновление</th>
-                                    <th>Показы</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <repeat group="{{ @stats }}" value="{{ @stat }}">
                                 <tr>        
                                     <td>{{ @stat.product }}</td>    
-                                    <td>  
-                                    <check if="{{ @stat.words == @stat.allwords}}">
-                                        <true>
-                                            <span style="color:#1ABC9C">{{ @stat.words }}</span>
-                                        </true>
-                                        <false>
-                                            <span style="color:#1ABC9C">{{ @stat.words }}</span> / <span style="color:#ffb400">{{ @stat.allwords }}</span>
-                                        </false>
-                                    </check>
-                                    </td>  
-                                    <td>{{ @stat.datetime }}</td>
-                                    <td><i class="fa fa-arrow-up hidden" aria-hidden="true" style="color:#1ABC9C;"></i> {{ @stat.impressions }}</td>
+                                    <td>{{ @stat.allwords }}</td>  
                                 </tr>
                                 </repeat>
                             </tbody>

@@ -31,15 +31,18 @@ class YWSController extends Controller {
  		
  		//$this->f3->get('PARAMS.id');
 
-    	$word = $this->db->exec("SELECT tbl_words.name, tbl_words.id, stat.datetime FROM tbl_words LEFT JOIN( SELECT tbl_stats.datetime, tbl_stats.word FROM tbl_stats ORDER BY tbl_stats.datetime DESC LIMIT 1) AS stat ON stat.word = tbl_words.id ORDER BY stat.datetime ASC LIMIT 1")[0];
+    	$word = $this->db->exec("SELECT tbl_words.name, tbl_words.id, stat.datetime FROM tbl_words LEFT JOIN( SELECT tbl_stats.datetime, tbl_stats.word FROM tbl_stats ORDER BY tbl_stats.datetime DESC) AS stat ON stat.word = tbl_words.id ORDER BY stat.datetime ASC LIMIT 1")[0];
     	if(!$word) $this->pushJSON(false, "words empty");
+
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
 		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`) VALUES ( NULL , '".$time."', '0' );");
 		$log = $this->db->lastInsertId();	
+		$query = './vendor/ariya/phantomjs/bin/phantomjs yws.js '.$word['name'].' '.$log.' 2>&1';
 
- 		//foreach ($words as $key=>$word) {   } 
+        $this->db->exec("UPDATE  `capito`.`tbl_logs` SET  `query` =  '".$query."' WHERE  `tbl_logs`.`id` =".$log.";"); 
+ 		//foreach ($words as $key=>$word) {   	} 
  		putenv('LANG=en_US.UTF-8'); 
-        $response = shell_exec('./vendor/ariya/phantomjs/bin/phantomjs yws.js '.$word['name'].' '.$log.' 2>&1'); 
+        $response = shell_exec($query); 
 
         if(empty($response) OR !$this->isJson($response)) $response = '';        
         $this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '".strval(empty($response) ? '-1' : '1')."' WHERE  `tbl_logs`.`id` =".$log.";");   

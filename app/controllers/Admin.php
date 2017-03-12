@@ -26,8 +26,8 @@ class AdminController extends Controller {
         $nav['stat']['class'] = '';
         $nav['stat']['icon'] = 'fa-bar-chart';
         $nav['stat']['title'] = 'Статистика';
-        $nav['offers']['href'] = '#';
-        $nav['offers']['class'] = 'class=disabled';
+        $nav['offers']['href'] = '/admin/offer';
+        $nav['offers']['class'] = '';
         $nav['offers']['icon'] = 'fa-briefcase';
         $nav['offers']['title'] = 'Офферы';
         $nav['log']['href'] = '/admin/log';

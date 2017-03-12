@@ -1,4 +1,4 @@
-//add extension = "bz2.so" php.ini
+	
 {	
 	"minimum-stability": "dev",
 	"autoload": {
