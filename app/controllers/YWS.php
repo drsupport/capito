@@ -31,13 +31,18 @@ class YWSController extends Controller {
  		
  		//$this->f3->get('PARAMS.id');
 
-    	$word = $this->db->exec("SELECT tbl_words.name, tbl_words.id, stat.datetime FROM tbl_words LEFT JOIN( SELECT tbl_stats.datetime, tbl_stats.word FROM tbl_stats ORDER BY tbl_stats.datetime DESC) AS stat ON stat.word = tbl_words.id ORDER BY stat.datetime ASC LIMIT 1")[0];
+    	$word = $this->db->exec("SELECT tbl_words.name, tbl_words.id, stat.datetime FROM tbl_words LEFT JOIN( SELECT tbl_stats.datetime, tbl_stats.word FROM tbl_stats WHERE tbl_stats.datetime = CURDATE() GROUP BY tbl_stats.word) AS stat ON stat.word = tbl_words.id ORDER BY stat.datetime ASC LIMIT 1")[0];
     	if(!$word) $this->pushJSON(false, "words empty");
 
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
 		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`) VALUES ( NULL , '".$time."', '0' );");
 		$log = $this->db->lastInsertId();	
-		$query = './vendor/ariya/phantomjs/bin/phantomjs yws.js '.$word['name'].' '.$log.' 2>&1';
+
+		//account
+        $setting = $this->db->exec("SELECT * FROM  `tbl_settings`")[0];
+
+		$query = './vendor/ariya/phantomjs/bin/phantomjs yws.js '.$word['name'].' '.$log.' '.$setting['value1'].' '.$setting['value2'].' 2>&1';
+
 
         $this->db->exec("UPDATE  `capito`.`tbl_logs` SET  `query` =  '".$query."' WHERE  `tbl_logs`.`id` =".$log.";"); 
  		//foreach ($words as $key=>$word) {   	} 
@@ -50,8 +55,8 @@ class YWSController extends Controller {
         $response = json_decode($response);
         $this->db->exec("INSERT IGNORE INTO  `tbl_stats` (`id`, `datetime`, `word`, `device`, `geo`, `impressions`) VALUES (NULL, '".date("Y-m-d 00:00", strtotime($response->datetime))."', '".$word['id']."', NULL, NULL, '".$response->impressions."');");
 
-		
-
+		$this->get('http://capito.dr.cash/p/stat');
+        
 
 		//print_r($response);
 

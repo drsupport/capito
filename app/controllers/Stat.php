@@ -1,8 +1,7 @@
  <?php
 class StatController extends AdminController {
     function index() {
-    	$stats = $this->db->exec("SELECT result.product AS product, Count(*) AS words, Sum(result.impressions) AS impressions, Max(Date_format(result.datetime, '%d.%m.%Y')) AS `datetime`, result.allwords FROM(SELECT tbl_products.id AS product_id, tbl_products.name AS product, tbl_products_words.word, stat.impressions, stat.datetime, stat.word AS allwords FROM tbl_products_words LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product LEFT JOIN(SELECT tbl_stats.impressions, tbl_stats.datetime, tbl_stats.word FROM tbl_stats ORDER BY tbl_stats.datetime DESC) AS stat ON stat.word = tbl_products_words.word WHERE stat.datetime IS NOT NULL GROUP BY tbl_products_words.word) AS result GROUP BY result.product_id ");
-   	    
+    	$stats = $this->db->exec("SELECT tbl_products.id AS product_id, tbl_products.name AS product, tbl_stats_products.words AS allwords, tbl_stats_products.word AS words, tbl_stats_products.impressions, stat.max_impressions, stat.min_impressions, CASE WHEN tbl_stats_products.impressions = stat.max_impressions THEN 0 WHEN tbl_stats_products.impressions > stat.max_impressions THEN 1 WHEN tbl_stats_products.impressions < stat.max_impressions THEN -1 END AS dynamic, Date_format(tbl_stats_products.datetime, '%d.%m.%Y') AS `datetime` FROM tbl_stats_products LEFT JOIN tbl_products ON tbl_products.id = tbl_stats_products.product LEFT JOIN( SELECT tbl_products.id AS product, MAX(tbl_stats_products.impressions) AS max_impressions, MIN(tbl_stats_products.impressions) AS min_impressions, Date_format(tbl_stats_products.datetime, '%d.%m.%Y') AS `datetime` FROM tbl_stats_products LEFT JOIN tbl_products ON tbl_products.id = tbl_stats_products.product WHERE tbl_stats_products.datetime < DATE_SUB(CURDATE(), INTERVAL 0 DAY) OR tbl_stats_products.datetime = CURDATE() GROUP BY tbl_products.id) AS stat ON stat.product = tbl_stats_products.product ORDER BY tbl_stats_products.datetime DESC");   	    
    	    $template = \Template::instance();  
         $this->f3->set('stats', $stats);    
         echo $template->render('stat.html');
@@ -10,5 +9,3 @@ class StatController extends AdminController {
 }
 
 
-
-?>

@@ -1,0 +1,48 @@
+<include href="admin/header.html" />
+<link rel="stylesheet" type="text/css" href="../app/views/assets/css/setting.css">
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="side-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card margin-top">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="title">Настройки</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" style="border-top: 1px solid #ddd;" role="tablist">
+                                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Yandex.Wordstat</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="home">
+                                    <form class="updateForm"> 
+                                        <div class="preloader"><img src="../app/views/assets/images/preloader.gif"></div>
+                                        <div class="form-group">
+                                            <label for="login"><span>Логин</span></label>
+                                            <input type="text" name="login" class="form-control" required="" value="{{ @login }}">
+                                        </div>  
+                                        <div class="form-group">
+                                            <label for="password"><span>Пароль</span></label>
+                                            <input type="password" name="password" class="form-control" required="" value="{{ @password }}">
+                                        </div>               
+                                        <div>
+                                            <button type="submit" class="btn btn-info btn-update" disabled="disabled"><span style="top:1px;left:-3px;" class="glyphicon glyphicon-repeat icon-update hidden" aria-hidden="true"></span> Сохранить изменения</span></button>
+                                        </div>   
+                                    </form>
+                                </div>                                            
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<include href="admin/footer.html" />
+<script type="text/javascript" src="../app/views/assets/js/app/setting.js"></script>

@@ -27,6 +27,8 @@
     require_once(__DIR__.'/app/controllers/YWS.php');
     require_once(__DIR__.'/app/controllers/Log.php');
     require_once(__DIR__.'/app/controllers/Offer.php');
+    require_once(__DIR__.'/app/controllers/Cron.php');
+    require_once(__DIR__.'/app/controllers/Setting.php');
 
     $f3 = \Base::instance();    
     $f3->config('app/config/system.cfg');         

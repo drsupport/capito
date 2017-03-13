@@ -25,7 +25,7 @@
 </head>
 
 <body class="flat-blue">
-    <div class="app-container">
+    <div class="app-container expanded">
         <div class="row content-container">
             <nav class="navbar navbar-default navbar-fixed-top navbar-top">
                 <div class="container-fluid">
@@ -54,14 +54,14 @@
                         <li class="dropdown profile">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">root <span class="caret"></span></a>
                             <ul class="dropdown-menu animated fadeInDown">
-                                <li class="profile-img">
-                                    <img src="../cdn/flat-admin-bootstrap-templates/dist/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
+                                <li class="profile-img hidden">
+                                    <img src="../app/views/assets/images/person.png" class="profile-img">
                                 </li>
                                 <li>
                                     <div class="profile-info">
                                         <h4 class="username">root</h4>
                                         <div class="btn-group margin-bottom-2x" role="group">
-                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i> Настройки профиля</button>
+                                            <a type="button" class="btn btn-default" href="/admin/setting"><i class="fa fa-user"></i> Настройки профиля</button>
                                             <a type="button" class="btn btn-default" href="/logout"><i class="fa fa-sign-out"></i> Выход</a>
                                         </div>
                                     </div>

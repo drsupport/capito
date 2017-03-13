@@ -17,17 +17,18 @@ function ajax(url, params, callback) {
 var page = require('webpage').create(),
 	system = require('system'),
 	url = 'https://wordstat.yandex.ru/#!/?words=' +encodeURIComponent(system.args[1]);
+var args = system.args;
 page.open(url, function (status) {
 	page.includeJs('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js', function () {
 		//page.injectJs('http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');	
-		page.evaluate(function() {
+		page.evaluate(function(args) {
 			var login = document.getElementsByClassName('b-domik_type_popup')[0];   
 			var username = document.getElementById('b-domik_popup-username');
 			var password = document.getElementById('b-domik_popup-password');
-			
-			username.value = 'ivanov.vladimir.v';
-			password.value = 'sp@rt@nec';
-		});
+
+			username.value = args[3];
+			password.value = args[4];
+		}, args);
 	
 	    setTimeout(function() {
 	    	page.evaluate(function() {
