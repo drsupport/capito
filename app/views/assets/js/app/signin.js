@@ -113,10 +113,11 @@ document.addEventListener("DOMContentLoaded", function(){
         event.preventDefault();           
         p.style.display = 'block';
         var arg = serialize(this);            
-        ajax('../signin', arg, function(data){
+        ajax('/signin', arg, function(data){
             p.style.display = 'none' 
-            if (data['response']['success']) {             
-                window.location = "../admin";
+            if (data['response']['success']) {         
+                window.location = location.pathname;
+                //window.location = "/admin";
             } else {
 
             }

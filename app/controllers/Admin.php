@@ -21,7 +21,6 @@ class AdminController extends Controller {
 
         $nav = [];
         $path = explode('/', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-        //$path[sizeof($path)-1];
         $nav['stat']['href'] = '/admin/stat';
         $nav['stat']['class'] = '';
         $nav['stat']['icon'] = 'fa-bar-chart';
@@ -45,8 +44,8 @@ class AdminController extends Controller {
         $nav[$path[4]]['class'] = 'class=active';
         $this->f3->set('nav_list', $nav);  
     }
-    function index() {
-        $this->f3->reroute(strval($_SERVER['REQUEST_URI'] ? $_SERVER['REQUEST_URI'] : '/admin/stat'));
+    function index() {        
+        $this->f3->reroute('/admin/stat');
     }
     function emulate() {
         $this->auth('1', '2');
