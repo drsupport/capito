@@ -93,7 +93,12 @@ function validateBrief(f) {
     return true;   
 } 
 document.addEventListener("DOMContentLoaded", function(){ 
-    var f = document.getElementsByClassName('signin')[0];   
+    var f = document.getElementsByClassName('signin')[0]; 
+    if(validateBrief(f)) { 
+        e.className += " btn-info";
+        e.classList.remove("btn-default");
+        e.disabled = false;   
+    }
     f.addEventListener("keyup", function(event) {
         event.preventDefault();  
         var e = document.querySelector('[type="submit"]');
