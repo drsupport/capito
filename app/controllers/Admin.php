@@ -47,9 +47,7 @@ class AdminController extends Controller {
     function index() {        
         $this->f3->reroute('/admin/stat');
     }
-    function emulate() {
-        $this->auth('1', '2');
-    }
+
 
 }
 ?>

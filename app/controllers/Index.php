@@ -10,6 +10,9 @@ class Controller {
         $this->f3=$f3;    
         $this->db=$f3->get('DB');
     }
+    function test() {
+        echo md5(md5('1q2w3e4drcash'));
+    }
     function sqlij($str='') { 
         if (get_magic_quotes_gpc()) { 
             $str = stripslashes($str); 
