@@ -46,7 +46,7 @@ class AdminController extends Controller {
         $this->f3->set('nav_list', $nav);  
     }
     function index() {
-        $this->f3->reroute('/admin/stat');
+        $this->f3->reroute(strval($_SERVER['REQUEST_URI'] ? $_SERVER['REQUEST_URI'] : '/admin/stat'));
     }
     function emulate() {
         $this->auth('1', '2');
