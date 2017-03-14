@@ -1,9 +1,37 @@
 <include href="admin/header.html" />
+<link rel="stylesheet" type="text/css" href="/app/views/assets/css/dynamic.css">
 <!-- Main Content -->
 <div class="container-fluid">
     <div class="side-body">
         <div class="row">
             <div class="col-xs-12">
+                <div class="row margin-top hidden">
+                    <div class="col-sm-4 col-xs-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <div class="title">Динамика</div>
+                                </div>
+                            </div>
+                            <div class="card-body no-padding">
+                                <canvas id="line-chart" class="chart"></canvas>
+                                <div id="js-legend" class="chart-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="card hidden">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <div class="title">Динамика</div>
+                                </div>
+                            </div>
+                            <div class="card-body no-padding">
+                                <canvas id="bar-chart" class="chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card margin-top">
                     <div class="card-header">
                         <div class="card-title">
@@ -60,3 +88,4 @@
     </div>
 </div>
 <include href="admin/footer.html" />
+<script type="text/javascript" src="/app/views/assets/js/app/dynamic.js"></script>
