@@ -1,5 +1,5 @@
 <include href="admin/header.html" />
-<link rel="stylesheet" type="text/css" href="../app/views/assets/css/log.css">
+<link rel="stylesheet" type="text/css" href="/app/views/assets/css/log.css">
 <!-- Main Content -->
 <div class="container-fluid">
     <div class="side-body">
@@ -42,7 +42,7 @@
                             <tbody>
                                 <repeat group="{{ @logs }}" value="{{ @log }}">
                                 <tr>        
-                                    <td><a href="../log/{{ @log.id }}.png" target="_blank">#{{ @log.id }}</a></td>
+                                    <td><a href="/log/{{ @log.id }}.png" target="_blank">#{{ @log.id }}</a></td>
                                     <td>Yandex.Wordstat</td>
                                     <td>{{ @log.datetime }}</td>          
                                     <td>
@@ -62,4 +62,4 @@
     </div>
 </div>
 <include href="admin/footer.html" />
-<script type="text/javascript" src="../app/views/assets/js/app/log.js"></script>
+<script type="text/javascript" src="/app/views/assets/js/app/log.js"></script>

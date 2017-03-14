@@ -1,4 +1,3 @@
-	
 {	
 	"minimum-stability": "dev",
 	"autoload": {
@@ -45,6 +44,7 @@
         "hundredminds/ipgeobase": "^1.03",
         "ipgeobase/data" : "1.0",
         "ariya/phantomjs" : "2.1.1",
-        "ivansky/php-yandex-wordstat" : "master"
+        "ivansky/php-yandex-wordstat" : "master",
+        "tiben/crontab-manager" : "~1.0"
     }
 }
