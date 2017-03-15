@@ -55,7 +55,7 @@ class YWSController extends Controller {
         $response = json_decode($response);
         $this->db->exec("INSERT IGNORE INTO  `tbl_stats` (`id`, `datetime`, `word`, `device`, `geo`, `impressions`) VALUES (NULL, '".date("Y-m-d 00:00", strtotime($response->datetime))."', '".$word['id']."', NULL, NULL, '".$response->impressions."');");
 
-		//$this->get('http://capito.dr.cash/p/stat');
+		$this->get('http://capito.dr.cash/p/stat');
 		//$this->pushJSON(true, $word['name']); 
         
 
