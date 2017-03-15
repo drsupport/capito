@@ -4,3 +4,7 @@
     height: 12px;
     margin-right: 5px;
 }
+
+#line-chart{
+	height: 200px!important;
+}
