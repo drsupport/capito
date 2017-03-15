@@ -39,17 +39,40 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table table-stat">
                             <thead>
                                 <tr>
                                     <th>Оффер</th>
                                     <th>Запросы</th>
-                                    <th>Последнее обновление</th>
                                     <th>Показы</th>
+                                    <th>Яндекс.Wordstat</th>
+                                    <th>Парсинг</th>                                   
                                 </tr>
                             </thead>
                             <tbody>
                                 <repeat group="{{ @stats }}" value="{{ @stat }}">
+                                <style>
+                                    .table-stat thead tr:first-child th:nth-child(3){                                        
+                                        background:#FDFDFD;
+                                        border-top: solid 1px #22A7F0;
+                                        border-right: solid 1px #22A7F0;
+                                        border-left: solid 1px #22A7F0;
+                                    }
+                                    .table-stat tbody tr:last-child td:nth-child(3){                                        
+                                        background:#FDFDFD;
+                                        border-bottom: solid 1px #22A7F0;
+                                    }
+                                    .table-stat tbody tr td:nth-child(3){                                        
+                                        background:#FDFDFD;
+                                        border-right: solid 1px #22A7F0;
+                                        border-left: solid 1px #22A7F0;
+                                    }
+                                         
+                                    .table-stat tbody tr:nth-child(even) {
+                                        background: :#FDFDFD;
+                                    }
+            
+                                </style>
                                 <tr>        
                                     <td>{{ @stat.product }}</td>    
                                     <td>  
@@ -62,7 +85,6 @@
                                         </false>
                                     </check>
                                     </td>  
-                                    <td>{{ @stat.datetime }}</td>
                                     <td>
                                     <check if="{{ @stat.impressions }}">
                                         <true>
@@ -76,6 +98,8 @@
                                         </false>
                                     </check>
                                     </td>
+                                    <td>{{ @stat.datetime }}</td>
+                                    <td>{{ @stat.datetime }}</td>
                                 </tr>
                                 </repeat>
                             </tbody>

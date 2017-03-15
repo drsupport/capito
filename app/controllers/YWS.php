@@ -35,13 +35,13 @@ class YWSController extends Controller {
     	if(!$word) $this->pushJSON(false, "words empty");
 
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
-		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`) VALUES ( NULL , '".$time."', '0' );");
+		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`, `query`, `response`) VALUES ( NULL , '".$time."', '0', '', '".$word['name']."');");
 		$log = $this->db->lastInsertId();	
 
 		//account
         $setting = $this->db->exec("SELECT * FROM  `tbl_settings`")[0];
 
-		$query = './vendor/ariya/phantomjs/bin/phantomjs yws.js '.$word['name'].' '.$log.' '.$setting['value1'].' '.$setting['value2'].' 2>&1';
+		$query = './vendor/ariya/phantomjs/bin/phantomjs yws.js "'.$word['name'].'" '.$log.' '.$setting['value1'].' '.$setting['value2'].' 2>&1';
 
 
         $this->db->exec("UPDATE  `capito`.`tbl_logs` SET  `query` =  '".$query."' WHERE  `tbl_logs`.`id` =".$log.";"); 
@@ -56,6 +56,7 @@ class YWSController extends Controller {
         $this->db->exec("INSERT IGNORE INTO  `tbl_stats` (`id`, `datetime`, `word`, `device`, `geo`, `impressions`) VALUES (NULL, '".date("Y-m-d 00:00", strtotime($response->datetime))."', '".$word['id']."', NULL, NULL, '".$response->impressions."');");
 
 		$this->get('http://capito.dr.cash/p/stat');
+		//$this->pushJSON(true, $word['name']); 
         
 
 		//print_r($response);

@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function(){
     var p = document.getElementsByClassName('preloader')[0];
     var a = document.getElementsByClassName('alert')[0];
     var m = document.getElementsByClassName('msg')[0];
+    if(validateForm(f)) {     
+        e.className += " btn-info";
+        e.classList.remove("btn-default");
+        e.disabled = false;
+    } else {
+        e.className += " btn-default";
+        e.classList.remove("btn-info");
+        e.disabled = true;            
+    }  
     f.addEventListener("keyup", function(event) {
         event.preventDefault();          
         e.disabled = false;       
@@ -25,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function(){
         ajax('/admin/offer/create', arg, function(data){
             if(isValidJSON(data)) var data = JSON.parse(data);
             if(data['response']['success']) { 
-                location.reload(); 
+                window.location = '/admin/offer/';
             } else {            
                 p.style.display = 'none';
                 e.className += " btn-default";

@@ -8,4 +8,3 @@ class StatController extends AdminController {
     }
 }
 
-

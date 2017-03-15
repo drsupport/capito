@@ -27,7 +27,7 @@
                                 <tr>        
                                     <td>{{ @offer.product }}</td>    
                                     <td>{{ @offer.words }}</td>  
-                                    <td><button type="button" class="btn btn-xs btn-warning" style="margin-top:0px;margin-bottom:0px;">edit</button></td>
+                                    <td><a type="button" class="btn btn-xs btn-warning" href="/admin/offer/edit/{{ @offer.id }}" style="margin-top:0px;margin-bottom:0px;">edit</a></td>
                                 </tr>
                                 </repeat>
                             </tbody>
