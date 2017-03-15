@@ -15,6 +15,15 @@ class OfferController extends AdminController {
     	if(empty($_POST['words'])) if(!$product) $this->pushJSON(false, 'words undefined', '', 'words');    	
     	if(empty($_POST['name'])) if(!$product) $this->pushJSON(false, 'name undefined', '', 'name'); 
     	$product = $_POST['name'];
+
+    	//edit
+ 		if(!empty($_POST['id'])) { 
+ 			$this->db->exec("UPDATE  `tbl_products` SET  `name` =  '".$product."' WHERE  `tbl_products`.`id` =".$_POST['id'].";");
+			$product = $this->db->exec("SELECT * FROM  `tbl_products` WHERE  `id` =".$_POST['id'])[0]['name'];
+			if(empty($product)) $this->pushJSON(false, 'product_id undefined', '', 'id'); 
+			$this->db->exec("DELETE FROM tbl_products_words WHERE tbl_products_words.product = ". $_POST['id']);
+		}
+
  		$product = $this->db->exec("INSERT IGNORE INTO `tbl_products`(`id` , `name`) VALUES (NULL, '".$product."') ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id);");
  		//if(!$product) $this->pushJSON(false, 'product exists', '', 'name');
  		$product = $this->db->lastInsertId();
@@ -27,7 +36,12 @@ class OfferController extends AdminController {
 			if ($word) $i++;
  			$word = $this->db->lastInsertId();
  			$this->db->exec("INSERT IGNORE INTO `tbl_products_words`( `id` , `product` , `word`) VALUES ( NULL , '".$product."', '".$word."' );"); 	 					
-		}	
+		}
+
+    	//edit
+ 		if(!empty($_POST['id'])) { 
+			$this->db->exec("DELETE FROM tbl_words WHERE id IN( SELECT * FROM ( SELECT tbl_words.id FROM tbl_words LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_words.id WHERE tbl_products_words.product IS NULL GROUP BY tbl_words.id) AS p )");	
+		}
 
 		$msg = 'Result product id: '.$product.' is new '. 'and of '.strval(count($words)).' words, '.strval($i).' word is new added, '.strval(count($words)-$i).' is updated'; 
     	$this->pushJSON(true, $msg);
@@ -40,9 +54,10 @@ class OfferController extends AdminController {
     	if(empty($_POST['id'])) $this->pushJSON(false, 'id undefined'); 
     	$product = $_POST['id'];
 
- 		$words = $this->db->exec("SELECT tbl_products_words.id, tbl_products.name AS product, tbl_words.name AS word FROM tbl_products_words left join tbl_words ON tbl_words.id = tbl_products_words.word left join tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product = ".$product);
+ 		$words = $this->db->exec("SELECT tbl_products_words.id, tbl_products.id AS product_id, tbl_products.name AS product, tbl_words.name AS word FROM tbl_products_words left join tbl_words ON tbl_words.id = tbl_products_words.word left join tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product = ".$product);
     	if(!$words) $this->pushJSON(true, 'words empty');	
 
+    	$id = $words[0]['product_id'];
     	$product = $words[0]['product'];
     	$words = array_column($words, 'word');
 		$words = implode($words, ',');	
@@ -50,6 +65,8 @@ class OfferController extends AdminController {
     	$template = \Template::instance();    
     	$this->f3->set('name', $product); 
     	$this->f3->set('words', $words); 
+    	$this->f3->set('id', $id); 
+
         echo $template->render('offer/edit.html');    	
 
     }
