@@ -13,12 +13,20 @@ function ajax(url, params, callback) {
     };
     xhr.send(params);
 }
+//./vendor/ariya/phantomjs/bin/phantomjs --web-security=no anticaptcha.js "пиджеум" 003fa7c1cd658bca6016eae7c179f012 ivanov.vladimir.v sp@rt@nec
+function pushJSON(phantom) {
+    var result = {};  
+    var success = [];
+    result.success = 'false';
+    console.log(JSON.stringify(result));
+    phantom.exit(); 
+} 
 var page = require('webpage').create(),
     system = require('system'),
-    url = 'https://wordstat.yandex.ru/#!/history?words=test';
+    url = 'https://wordstat.yandex.ru/#!/history?period=weekly&words='+encodeURIComponent(system.args[1]);
 var args = system.args;
 var data = [];
-var clientKey = '003fa7c1cd658bca6016eae7c179f012';
+var clientKey = system.args[2];
 page.settings.userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0';
 page.open(url, function (status) {
     page.includeJs('https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js', function () {
@@ -28,11 +36,9 @@ page.open(url, function (status) {
             var password = document.getElementById('b-domik_popup-password');
             username.value = args[3];
             password.value = args[4];  
-            console.log('login/password');
             $(document).ready(function(){
                 $('.b-form-button__input').click();
             }); 
-            console.log('log in');
         }, args);
         setTimeout(function() {
             page.evaluate(function() {
@@ -41,6 +47,7 @@ page.open(url, function (status) {
                 }); 
             });
         }, 5000);
+
         setTimeout(function() {            
             var clipRect = page.evaluate(function() {
                 var captcha = document.getElementsByClassName('b-popupa__content')[0];                              
@@ -53,19 +60,19 @@ page.open(url, function (status) {
                 width:  175,
                 height: 71
             };
-            page.render('log/captcha.png');
+            //page.render('log/captcha.png');
             var base64 = page.renderBase64('PNG');   
             var arg = '{"clientKey":"'+clientKey+'","task":{"type":"ImageToTextTask","body":"'+base64+'","phrase":false,"case":false,"numeric":false,"math":0,"minLength":0,"maxLength":0}}';            
             ajax('http://api.anti-captcha.com/createTask', arg, function(response){
                 var response = JSON.parse(response);    
-                console.log('antigate decoding ... task: '+response['taskId']);  
+                //console.log('antigate decoding ... task: '+response['taskId']);  
                 var arg = '{"clientKey":"'+clientKey+'","taskId":"'+response['taskId']+'"}'; 
                 var result;
                 var getTaskResult = setInterval(function() { 
                     ajax('http://api.anti-captcha.com/getTaskResult', arg, function(response){
                         var response = JSON.parse(response);     
                         if(response['status']=='ready') {           
-                            console.log('antigate decode: '+response['solution']['text']);  
+                            //console.log('antigate decode: '+response['solution']['text']);  
                             result = response['solution']['text'];
                             clearInterval(getTaskResult);
                         }                                   
@@ -86,18 +93,41 @@ page.open(url, function (status) {
                         }, 5000); 
                         setTimeout(function() { 
                             page.clipRect = { left:0, top:0, width:0, height:0 }
-                            page.render('log/test.png'); 
-
-
-
-
-
-                            phantom.exit();                              
+                            //page.render('log/month.png');
+                            //parse history
+                            var result = {};
+                            result['success'] = 'true';
+                            result['response'] = {};
+                            result['response']['history'] = {};  
+                            var weekly = page.evaluate(function(pushJSON) {
+                                var id = 0;
+                                var weekly = {}; 
+                                for (var j=0; j<=1; j++) {
+                                    var obj = document.getElementsByClassName('b-history__table-body')[j];  
+                                    if (typeof obj === "undefined") { pushJSON(phantom); }
+                                    var elements = [];
+                                    for (var i=0; i<obj.childNodes.length; i++) {
+                                        var child = obj.childNodes[i];
+                                        if (child.nodeType == 1) {
+                                            id++;
+                                            weekly[id] = {};    
+                                            weekly[id]['period'] = child.getElementsByTagName("td")[0].outerText; 
+                                            weekly[id]['value'] = child.getElementsByClassName('b-history__value-td')[0].outerText;
+                                        }
+                                    }
+                                }
+                                document.getElementsByClassName('b-form-radio__radio')[1].click();  
+                                return weekly;
+                            }, pushJSON); 
+                            result['response']['history']['weekly'] = {}; 
+                            result['response']['history']['weekly'] = weekly;
+                            console.log(JSON.stringify(result));  
+                            phantom.exit();
                         }, 10000);    
                         clearInterval(captchaPush);                     
                     }  
                 }, 10000);   
             });  
-        }, 10000);             
+        }, 10000);  
     });
 });
