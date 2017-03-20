@@ -121,8 +121,23 @@ page.open(url, function (status) {
                             }, pushJSON); 
                             result['response']['history']['weekly'] = {}; 
                             result['response']['history']['weekly'] = weekly;
-                            console.log(JSON.stringify(result));  
-                            phantom.exit();
+
+                            var balance;
+                            var arg = '{"clientKey":"'+clientKey+'"}'; 
+                            ajax('http://api.anti-captcha.com/getBalance', arg, function(response){     
+                            var response = JSON.parse(response);     
+                                balance = response['balance'];
+                            }); 
+                            var getBalance = setInterval(function() { 
+                                if (typeof balance != "undefined") {
+                                    console.log(balance); 
+                                    clearInterval(getBalance); 
+                                    result['balance'] = balance; 
+                                    console.log(JSON.stringify(result));  
+                                    phantom.exit();
+                                }
+                             }, 1000);          
+
                         }, 10000);    
                         clearInterval(captchaPush);                     
                     }  
