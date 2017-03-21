@@ -16,23 +16,12 @@
 	        }
 	    },
 	    {
-	        "type": "package",
-	        "package": {
-	            "name": "ariya/phantomjs",
-	            "version": "2.1.1",
-	            "dist": {
-	                "url": "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2",
-	                "type": "tar"
-	            }
-	        }
-	    },
-	    {
 	        "type":"package",
 	        "package": {
-	          "name": "ivansky/php-yandex-wordstat",
+	          "name": "drsupport/parser.yws",
 	          "version":"master",
 	          "source": {
-	              "url": "https://github.com/ivansky/php-yandex-wordstat.git",
+	              "url": "https://github.com/drsupport/parser.yws.git",
 	              "type": "git",
 	              "reference":"master"
 	            }
@@ -43,8 +32,9 @@
     	"bcosca/fatfree": "^3.5",
         "hundredminds/ipgeobase": "^1.03",
         "ipgeobase/data" : "1.0",
-        "ariya/phantomjs" : "2.1.1",
-        "ivansky/php-yandex-wordstat" : "master",
+        "drsupport/parser.yws" : "master",
         "tiben/crontab-manager" : "~1.0"
     }
 }
+
+
