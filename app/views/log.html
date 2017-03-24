@@ -33,7 +33,6 @@
                         <table class="table table-log">
                             <thead>
                                 <tr>
-                                    <th>Результат</th>
                                     <th>Процесс</th>
                                     <th>Запрос</th>
                                     <th>Дата</th>
@@ -44,7 +43,6 @@
                             <tbody>
                                 <repeat group="{{ @logs }}" value="{{ @log }}">
                                 <tr>        
-                                    <td><a href="/log/{{ @log.id }}.png" target="_blank">#{{ @log.id }}</a></td>
                                     <td>Yandex.Wordstat</td>
                                     <td>{{ @log.response }}</td>
                                     <td>{{ @log.datetime }}</td>          

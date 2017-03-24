@@ -1,12 +1,53 @@
  <?php
+ use \Colors\RandomColor;
 class StatController extends AdminController {
     function index() {
-    	$stats = $this->db->exec("SELECT tbl_products.id AS product_id, tbl_products.name AS product, tbl_stats_products.words AS allwords, tbl_stats_products.word AS words, tbl_stats_products.impressions, tbl_stats_products.dynamic, Date_format(tbl_stats_products.datetime, '%d.%m.%Y') AS `datetime` FROM tbl_stats_products LEFT JOIN tbl_products ON tbl_products.id = tbl_stats_products.product ORDER BY tbl_stats_products.datetime DESC");   	    
+    	$labels = [];
+    	$datasets = [];
+    	$datacolor = json_decode('["#FA2A00","#ffb400","#1ABC9C","#22A7F0","#FF0099","#6600CC","#FF9900","#996600","#006633","#CC6600"]');
+    	$colors = [];
+
+    	$stats = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product AS product_id, tbl_products.name AS product, COUNT(*) AS words, SUM(tbl_analytic.impressions) AS impressions FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product ORDER BY tbl_analytic.datetime_in DESC");   
+ 		$dates = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out FROM tbl_analytic GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out ORDER BY tbl_analytic.datetime_out ASC");
+ 		$offers = $this->db->exec("SELECT tbl_products_words.product AS id FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word GROUP BY tbl_products_words.product");
+
+ 		foreach($dates as $key => $date){  		
+ 			array_push($labels, date("d.m", strtotime(trim($date['datetime_in']))).'-'.date("d.m", strtotime(trim($date['datetime_out']))).'('.date("Y", strtotime(trim($date['datetime_out']))).')'); 			
+ 		}
+ 		foreach($offers as $key => $offer){  
+ 			$dataitem = [];
+ 			$data = $this->db->exec("SELECT stats.product, stats.product_id, GROUP_CONCAT(stats.impressions SEPARATOR ', ') AS impressions, COUNT(*) AS impressions_count FROM( SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product AS product_id, tbl_products.name AS product, COUNT(*) AS words, SUM(tbl_analytic.impressions) AS impressions FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product ORDER BY tbl_analytic.datetime_out ASC) AS stats WHERE stats.product_id = ".$offer['id']." GROUP BY stats.product_id")[0];
+ 			/*$color = RandomColor::one(array(
+			   'luminosity' => 'bright',
+			   'format' => 'rgbCss'
+			));*/
+			$color = $datacolor[$key]; 
+			$colors[$data['product_id']] = $color;
+
+ 			$dataitem['label'] = $data['product'];
+ 			$dataitem['color'] = $color;
+ 			$dataitem['fillColor'] = "rgba(34, 167, 240, 0)";
+ 			$dataitem['strokeColor'] = $color;
+ 			$dataitem['pointColor'] = $color;
+ 			$dataitem['pointStrokeColor'] = "#fff";
+ 			$dataitem['pointHighlightFill'] = "#fff";
+ 			$dataitem['pointHighlightStroke'] = $color;
+ 			$dataitem['data'] = [];
+ 			foreach(explode(",", $data['impressions']) as $key => $d){ 
+				array_push($dataitem['data'], intval(trim($d)));
+ 			}
+ 			array_push($datasets, $dataitem);
+ 		}
    	    $template = \Template::instance();  
-        $this->f3->set('stats', $stats);    
+        $this->f3->set('stats', $stats);   
+        $this->f3->set('labels', json_encode($labels));   
+        $this->f3->set('datasets', json_encode($datasets));  
+        $this->f3->set('colors', $colors);  
         echo $template->render('stat.html');
 
         
     }
 }
+
+
 

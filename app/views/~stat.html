@@ -26,11 +26,11 @@
                         <table class="table table-stat">
                             <thead>
                                 <tr>
-                                    <th>Неделя</th> 
                                     <th>Оффер</th>
                                     <th>Запросы</th>
                                     <th>Показы</th>
-                                                                 
+                                    <th>Яндекс.Wordstat</th>
+                                    <th class="hidden">Парсинг</th>                                   
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,13 +57,33 @@
                                     }
             
                                 </style>
-                                <tr>    
-                                    <td>{{ @stat.datetime_in }} - {{ @stat.datetime_out }}</td>    
+                                <tr>        
+                                    <td>{{ @stat.product }}</td>    
+                                    <td>  
+                                    <check if="{{ @stat.words == @stat.allwords}}">
+                                        <true>
+                                            <span style="color:#1ABC9C">{{ @stat.words }}</span>
+                                        </true>
+                                        <false>
+                                            <span style="color:#1ABC9C">{{ @stat.words }}</span> / <span style="color:#ffb400">{{ @stat.allwords }}</span>
+                                        </false>
+                                    </check>
+                                    </td>  
                                     <td>
-                                        <span style="color:{{ @colors[@stat.product_id] }}">{{ @stat.product }}</span>                                   
-                                    </td>    
-                                    <td>{{ @stat.words }}</td>  
-                                    <td>{{ @stat.impressions }}</td>                                    
+                                    <check if="{{ @stat.impressions }}">
+                                        <true>
+                                        <check if="{{ @stat.dynamic == -1 }}"><true><i class="fa fa-fw fa-lg fa-arrow-circle-o-down" aria-hidden="true" style="color:#FA2A00;"></i> </true></check>
+                                        <check if="{{ @stat.dynamic == 1 }}"><true><i class="fa fa-fw fa-lg fa-arrow-circle-o-up" aria-hidden="true" style="color:#1ABC9C;"></i> </true></check>
+                                        <check if="{{ @stat.dynamic == 0 }}"><true><i class="fa fa-fw fa-lg fa-dot-circle-o" aria-hidden="true" style="color:#22A7F0"></i> </true></check>
+                                        {{ @stat.impressions }}
+                                        </true>
+                                        <false>
+                                            <i>inprocess</i>
+                                        </false>
+                                    </check>
+                                    </td>
+                                    <td>{{ @stat.datetime }}</td>
+                                    <td class="hidden">{{ @stat.datetime }}</td>
                                 </tr>
                                 </repeat>
                             </tbody>
@@ -76,8 +96,4 @@
     </div>
 </div>
 <include href="admin/footer.html" />
-<script>
-  var labels = JSON.parse('{{ @labels }}'.replace(/&quot;/g,'"'));
-  var datasets = JSON.parse('{{ @datasets }}'.replace(/&quot;/g,'"'));
-</script>
 <script type="text/javascript" src="/app/views/assets/js/app/dynamic.js"></script>

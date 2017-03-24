@@ -33,8 +33,7 @@
         "hundredminds/ipgeobase": "^1.03",
         "ipgeobase/data" : "1.0",
         "drsupport/parser.yws" : "master",
-        "tiben/crontab-manager" : "~1.0"
+        "tiben/crontab-manager" : "~1.0",
+		"mistic100/randomcolor": "^1.0"
     }
 }
-
-
