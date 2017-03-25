@@ -1,5 +1,6 @@
 <include href="admin/header.html" />
 <link rel="stylesheet" type="text/css" href="/app/views/assets/css/dynamic.css">
+<link rel="stylesheet" type="text/css" href="/cdn/bootstrap-multiselect/dist/css/bootstrap-multiselect.css">
 <!-- Main Content -->
 <div class="container-fluid">
     <div class="side-body">
@@ -9,6 +10,20 @@
                     <div class="card-header">
                         <div class="card-title">
                             <div class="title">Динамика</div>
+                        </div>
+                        <div class="pull-right"> 
+                            <form class="filtersForm" action="" method="post">    
+                                <div class="form-inline"> 
+                                    <div class="form-group" style="margin-bottom:0px;">  
+                                        <select name="offers[]" class="form-control offers" multiple="multiple">
+                                            <repeat group="{{ @offers }}" value="{{ @offer }}">
+                                                <option value="{{ @offer.id }}">{{ @offer.name }}</option>
+                                            </repeat>
+                                        </select>
+                                    </div>  
+                                    <button class="btn btn-info" type="submit">Применить</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="card-body no-padding">                                
@@ -76,8 +91,23 @@
     </div>
 </div>
 <include href="admin/footer.html" />
+<script type="text/javascript" src="/cdn/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
 <script>
-  var labels = JSON.parse('{{ @labels }}'.replace(/&quot;/g,'"'));
-  var datasets = JSON.parse('{{ @datasets }}'.replace(/&quot;/g,'"'));
+var labels = JSON.parse('{{ @labels }}'.replace(/&quot;/g,'"'));
+var datasets = JSON.parse('{{ @datasets }}'.replace(/&quot;/g,'"'));   
+$(function() {     
+    $('.offers').multiselect({
+        numberDisplayed: 1,
+        dropRight: true,
+        enableFiltering: false,
+        includeSelectAllOption: true,
+        onChange: function(element, checked) {
+            console.log('change');
+        }
+    });  
+    $('.offers').multiselect('select', [{{ @off }}]); 
+}); 
 </script>
 <script type="text/javascript" src="/app/views/assets/js/app/dynamic.js"></script>
+<script type="text/javascript" src="/app/views/assets/js/app/stat.js"></script>
+

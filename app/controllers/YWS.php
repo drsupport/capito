@@ -30,7 +30,7 @@ class YWSController extends Controller {
 		$log = $this->db->lastInsertId();	
         $setting = $this->db->exec("SELECT * FROM  `tbl_settings`")[0];
         $this->db->exec("UPDATE  `tbl_logs` SET  `query` =  '".$query."' WHERE  `tbl_logs`.`id` =".$log.";");         
-		$query = './vendor/drsupport/parser.yws/vendor/ariya/phantomjs/bin/phantomjs --web-security=no ./vendor/drsupport/parser.yws/yws.min.enc.js 003fa7c1cd658bca6016eae7c179f012 ivanov.vladimir.v sp@rt@nec "'.$word['name'].'" "" "weekly" "" 2>&1';
+		$query = './vendor/drsupport/parser.yws/vendor/ariya/phantomjs/bin/phantomjs --web-security=no ./vendor/drsupport/parser.yws/yws.js 003fa7c1cd658bca6016eae7c179f012 ivanov.vladimir.v sp@rt@nec "'.$word['name'].'" "" "weekly" "" 2>&1';
 		putenv('LANG=en_US.UTF-8'); 
         $response = shell_exec($query);
         if(empty($response) OR !$this->isJson($response)) unset($response); 

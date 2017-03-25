@@ -17,6 +17,8 @@
     "tests"
   ],
   "dependencies": {
-    "flat-admin-bootstrap-templates": "git://github.com/tui2tone/flat-admin-bootstrap-templates.git#dev-v2"
+    "flat-admin-bootstrap-templates": "git://github.com/tui2tone/flat-admin-bootstrap-templates.git#dev-v2",
+    "bootstrap-colorpicker": "mjolnic-bootstrap-colorpicker#^2.5.1",
+    "bootstrap-multiselect": "^0.9.13"
   }
 }

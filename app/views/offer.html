@@ -18,6 +18,7 @@
                             <thead>
                                 <tr>
                                     <th>Оффер</th>
+                                    <th>Сегмент</th>
                                     <th>Запросы</th>
                                     <th>Действие</th>
                                 </tr>
@@ -26,6 +27,7 @@
                                 <repeat group="{{ @offers }}" value="{{ @offer }}">
                                 <tr>        
                                     <td>{{ @offer.product }}</td>    
+                                    <td><i>{{ @offer.segment ? @offer.segment : 'Не выбран'}}</i></td>  
                                     <td>{{ @offer.words }}</td>  
                                     <td><a type="button" class="btn btn-xs btn-warning" href="/admin/offer/edit/{{ @offer.id }}" style="margin-top:0px;margin-bottom:0px;">edit</a></td>
                                 </tr>
