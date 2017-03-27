@@ -36,12 +36,12 @@ class YWSController extends Controller {
 
 
 		//undefined в ответе от phantom
-		/*
-		if (strripos($response, 'undefined')) {			
+		
+		if (strripos($response, 'null')) {			
 			$this->db->exec("UPDATE  `tbl_logs` SET  `response` =  'response invalid: undefined' WHERE  `tbl_logs`.`id` =".$log.";"); 
 			$this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '-1' WHERE  `tbl_logs`.`id` =".$log.";");
-			$this->pushJSON(false, "response invalid: undefined");
-		} */ 	
+			//$this->pushJSON(false, "response invalid: undefined");
+		} 	
 		echo $response;
         
         die();
