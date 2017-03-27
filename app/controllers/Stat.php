@@ -14,8 +14,8 @@ class StatController extends AdminController {
                 AND tbl_products_words.product IN(".implode(",", $_POST['offers']).")
             ";
         }       
-
-    	$stats = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product AS product_id, tbl_products.name AS product, COUNT(*) AS words, SUM(tbl_analytic.impressions) AS impressions FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product > 0 ".$filters." GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product ORDER BY tbl_analytic.datetime_in DESC");   
+        //tbl_analytic.datetime_in, tbl_analytic.datetime_out, 
+    	$stats = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product AS product_id, tbl_products.name AS product, COUNT(*) AS words, SUM(tbl_analytic.impressions) AS impressions FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product > 0 ".$filters." GROUP BY tbl_products_words.product ORDER BY tbl_analytic.datetime_in DESC");   
  		$dates = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out FROM tbl_analytic GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out ORDER BY tbl_analytic.datetime_out ASC");
  		$offers = $this->db->exec("SELECT tbl_products_words.product AS id, tbl_products.name FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product > 0 ".$filters." GROUP BY tbl_products_words.product");
 
