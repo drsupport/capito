@@ -37,7 +37,11 @@ class YWSController extends Controller {
         if(empty($response) OR !$this->isJson($response)) unset($response); 
         $this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '".strval(isset($response) ? '1' : '-1')."' WHERE  `tbl_logs`.`id` =".$log.";");
  		if(!isset($response)) $this->pushJSON(false, "json invalid");
-        $response = json_decode($response);      
+        $response = json_decode($response); 
+
+        print_r($response);     
+        echo $response->response->history;
+        die();
 		foreach($response->response->history as $key => $history){ 
 			$datetimes = explode("-", $history->period);
 			$datetimes = array_filter($datetimes, function($el){ return !empty($el);});
