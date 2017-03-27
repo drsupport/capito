@@ -26,7 +26,7 @@ class YWSController extends Controller {
     	$word = $this->db->exec("SELECT tbl_words.id, tbl_words.name, logs.word FROM tbl_words LEFT JOIN( SELECT tbl_logs.word FROM tbl_logs WHERE tbl_logs.datetime >=CURDATE() AND tbl_logs.status = 1 GROUP BY tbl_logs.word, DAY(tbl_logs.datetime)) AS logs ON logs.word = tbl_words.id WHERE logs.word IS NULL LIMIT 1")[0];
     	if(!$word) $this->pushJSON(false, "words empty");
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
-		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`, `query`, `response`, `word`) VALUES ( NULL , '".$time."', '0', '', '".$word['name']."', '".$word['id']."');");
+		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`, `query`, `response`, `word`) VALUES ( NULL , '".$time."', '0', '', '', '".$word['id']."');");
 		$log = $this->db->lastInsertId();	
         $setting = $this->db->exec("SELECT * FROM  `tbl_settings`")[0];               
 		$query = './vendor/drsupport/parser.yws/vendor/ariya/phantomjs/bin/phantomjs --web-security=no ./vendor/drsupport/parser.yws/yws.js 003fa7c1cd658bca6016eae7c179f012 ivanov.vladimir.v sp@rt@nec "'.$word['name'].'" "" "weekly" "" 2>&1';
@@ -36,18 +36,20 @@ class YWSController extends Controller {
 
 
 		//undefined в ответе от phantom
+		/*
 		if (strripos($response, 'undefined')) {			
 			$this->db->exec("UPDATE  `tbl_logs` SET  `response` =  'response invalid: undefined' WHERE  `tbl_logs`.`id` =".$log.";"); 
 			$this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '-1' WHERE  `tbl_logs`.`id` =".$log.";");
 			$this->pushJSON(false, "response invalid: undefined");
-		}
-    	
-
+		} */ 	
 
         $this->db->exec("UPDATE  `tbl_logs` SET  `response` =  '".$response."' WHERE  `tbl_logs`.`id` =".$log.";"); 
-        if(empty($response) OR !$this->isJson($response)) unset($response); 
+
+        // не соответствует формату json
+        if(empty($response) OR !$this->isJson($response) OR strripos($response, 'undefined')) unset($response); 
         $this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '".strval(isset($response) ? '1' : '-1')."' WHERE  `tbl_logs`.`id` =".$log.";");
  		if(!isset($response)) $this->pushJSON(false, "json invalid");
+
         $response = json_decode($response); 
 
         print_r($response);     
