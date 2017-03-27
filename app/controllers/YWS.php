@@ -39,7 +39,7 @@ class YWSController extends Controller {
 		
 		if (strripos($response, 'null')) {			
 			$this->db->exec("UPDATE  `tbl_logs` SET  `response` =  'response invalid: undefined' WHERE  `tbl_logs`.`id` =".$log.";"); 
-			$this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '-1' WHERE  `tbl_logs`.`id` =".$log.";");
+			$this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '-2' WHERE  `tbl_logs`.`id` =".$log.";");
 			//$this->pushJSON(false, "response invalid: undefined");
 		} 	
 		echo $response;
