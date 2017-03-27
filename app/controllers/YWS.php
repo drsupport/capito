@@ -32,33 +32,19 @@ class YWSController extends Controller {
 		$query = './vendor/drsupport/parser.yws/vendor/ariya/phantomjs/bin/phantomjs --web-security=no ./vendor/drsupport/parser.yws/yws.js 003fa7c1cd658bca6016eae7c179f012 ivanov.vladimir.v sp@rt@nec "'.$word['name'].'" "" "weekly" "" 2>&1';
 		$this->db->exec("UPDATE  `tbl_logs` SET  `query` =  '".$query."' WHERE  `tbl_logs`.`id` =".$log.";"); 
 		putenv('LANG=en_US.UTF-8'); 
-        $response = shell_exec($query);        
-
-
-		//undefined в ответе от phantom
-		
+        $response = shell_exec($query);  
+		//undefined в ответе от phantom		
 		if (strripos($response, 'null')) {			
 			$this->db->exec("UPDATE  `tbl_logs` SET  `response` =  'response invalid: undefined' WHERE  `tbl_logs`.`id` =".$log.";"); 
 			$this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '-2' WHERE  `tbl_logs`.`id` =".$log.";");
-			//$this->pushJSON(false, "response invalid: undefined");
+			$this->pushJSON(false, "response invalid: undefined");
 		} 	
-		echo $response;
-        
-        die();
-
         $this->db->exec("UPDATE  `tbl_logs` SET  `response` =  '".$response."' WHERE  `tbl_logs`.`id` =".$log.";"); 
-
         // не соответствует формату json
-        if(empty($response) OR !$this->isJson($response) OR strripos($response, 'undefined')) unset($response); 
+        if(empty($response) OR !$this->isJson($response)) unset($response); 
         $this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '".strval(isset($response) ? '1' : '-1')."' WHERE  `tbl_logs`.`id` =".$log.";");
  		if(!isset($response)) $this->pushJSON(false, "json invalid");
-
         $response = json_decode($response); 
-
-        print_r($response);     
-        echo $response->response->history;
-        die();
-
 		foreach($response->response->history as $key => $history){ 
 			$datetimes = explode("-", $history->period);
 			$datetimes = array_filter($datetimes, function($el){ return !empty($el);});
@@ -69,9 +55,7 @@ class YWSController extends Controller {
 			$this->db->exec("INSERT INTO `tbl_analytic` (`id`, `datetime`, `datetime_in`, `datetime_out`, `word`, `db`, `period`, `regions`, `impressions`) VALUES (NULL, '".$time."', '".date("Y-m-d", strtotime(trim($datetimes[0])))."', '".date("Y-m-d", strtotime(trim($datetimes[1])))."', '".$word['id']."', NULL, 'weekly', NULL, '".$history->value."') ON DUPLICATE KEY UPDATE `impressions` = '".$history->value."';");
 		}    
 		//$this->get('http://capito.dr.cash/p/stat');
-		$this->pushJSON(true, $word['name']);     
-
-
+		$this->pushJSON(true, $word['name']);   
     }
 }
 ?>
