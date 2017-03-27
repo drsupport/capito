@@ -43,10 +43,7 @@ class YWSController extends Controller {
 			$this->pushJSON(false, "response invalid: undefined");
 		} */ 	
 		echo $response;
-        $response = json_decode($response); 
-
-        print_r($response);     
-        echo 'history:'.$response->response->history;
+        
         die();
 
         $this->db->exec("UPDATE  `tbl_logs` SET  `response` =  '".$response."' WHERE  `tbl_logs`.`id` =".$log.";"); 
