@@ -42,12 +42,13 @@ class YWSController extends Controller {
 			$this->db->exec("UPDATE  `tbl_logs` SET  `status` =  '-1' WHERE  `tbl_logs`.`id` =".$log.";");
 			$this->pushJSON(false, "response invalid: undefined");
 		} */ 	
-       $response = json_decode($response); 
+		echo $response;
+        $response = json_decode($response); 
 
         print_r($response);     
-        echo $response->response->history;
+        echo 'history:'.$response->response->history;
         die();
-        
+
         $this->db->exec("UPDATE  `tbl_logs` SET  `response` =  '".$response."' WHERE  `tbl_logs`.`id` =".$log.";"); 
 
         // не соответствует формату json
