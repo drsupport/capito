@@ -23,7 +23,7 @@ class YWSController extends Controller {
 		return $data;
 	}
     function index() {    	
-    	$word = $this->db->exec("SELECT tbl_words.id, tbl_words.name, logs.word FROM tbl_words LEFT JOIN( SELECT tbl_logs.word FROM tbl_logs WHERE tbl_logs.datetime >=CURDATE() AND tbl_logs.status = 1 GROUP BY tbl_logs.word, DAY(tbl_logs.datetime)) AS logs ON logs.word = tbl_words.id WHERE logs.word IS NULL LIMIT 1")[0];
+    	$word = $this->db->exec("SELECT tbl_words.id, tbl_words.name, logs.word FROM tbl_words LEFT JOIN( SELECT tbl_logs.word FROM tbl_logs WHERE tbl_logs.datetime >=CURDATE() AND tbl_logs.status = 1 AND tbl_logs.status = -2 GROUP BY tbl_logs.word, DAY(tbl_logs.datetime)) AS logs ON logs.word = tbl_words.id WHERE logs.word IS NULL LIMIT 1")[0];
     	if(!$word) $this->pushJSON(false, "words empty");
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
 		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`, `query`, `response`, `word`) VALUES ( NULL , '".$time."', '0', '', '', '".$word['id']."');");
