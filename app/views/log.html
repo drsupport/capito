@@ -27,12 +27,17 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <check if="{{ @balance < 1}}"><true><div class="alert alert-danger" role="alert">Состояние счета Antigate: <strong>{{ @balance }}</strong> $ <a href="https://anti-captcha.com/" target="_blank" class="alert-link">Пополнить баланс</a></div></true></check>
+                        <check if="{{ @balance > 1 }}"><true><div class="alert alert-warning" role="alert">Состояние счета Antigate: <strong>{{ @balance }}</strong> $ <a href="https://anti-captcha.com/" target="_blank" class="alert-link">Пополнить баланс</a></div></true></check>
+                        <check if="{{ @balance >= 5 }}"><true><div class="alert alert-success" role="alert">Состояние счета Antigate: <strong>{{ @balance }}</strong> $ <a href="https://anti-captcha.com/" target="_blank" class="alert-link">Пополнить баланс</a></div></true></check>
+                   
                         <table class="table table-log">
                             <thead>
                                 <tr>
                                     <th>Процесс</th>
                                     <th>Запрос</th>
-                                    <th>Дата</th>
+                                    <th>Дата выполнения</th>
+                                    <th>Последняя дата Wordstat</th>
                                     <th>Статус</th>
                                 </tr>
                             </thead>
@@ -42,7 +47,8 @@
                                 <tr>        
                                     <td>Yandex.Wordstat</td>
                                     <td>{{ @log.response }}</td>
-                                    <td>{{ @log.datetime }}</td>          
+                                    <td>{{ @log.datetime }}</td>  
+                                    <td>{{ @log.datetime_update }}</td>          
                                     <td>
                                     <check if="{{ @log.status == 1}}"><true><span style="color:#1ABC9C">approved</span></true></check>
                                     <check if="{{ @log.status == -1}}"><true><span style="color:#FA2A00">rejected</span></true></check>
