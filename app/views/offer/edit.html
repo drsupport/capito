@@ -1,5 +1,6 @@
 <include href="admin/header.html" />
 <link rel="stylesheet" type="text/css" href="/cdn/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+<link rel="stylesheet" type="text/css" href="/cdn/bootstrap-multiselect/dist/css/bootstrap-multiselect.css">
 <link rel="stylesheet" type="text/css" href="/app/views/assets/css/offer.css">
 <!-- Main Content -->
 <div class="container-fluid">
@@ -29,7 +30,8 @@
                                 <label for="words"><span>Ключевые запросы *</span></label>
                                 <textarea name="words" class="form-control" style="resize:none;" rows="3">{{ @words }}</textarea>
                                 <p class="help-block">В качестве разделителя использовать запятую: <i>Слон, Муха</i></p>
-                            </div>   
+                            </div>  
+
                             <div class="sub-title">Рыночные атрибуты</div>   
                             <div class="form-group">
                                 <label for="segment"><span>Сегмент</span></label>
@@ -49,15 +51,22 @@
                                 </repeat>
                                 </select>
                             </div>  
-                            <div class="form-group">
-                                <label for="reseller"><span>Реселлер</span></label>
-                                <select name="reseller" class="form-control reseller">
-                                <option value="">Не выбран</option>   
-                                <repeat group="{{ @companies }}" value="{{ @company }}">   
-                                    <option {{ @company.id == @reseller ? 'selected' : '' }} value="{{ @company.id }}">{{ @company.name }}</option>
-                                </repeat>
-                                </select>
-                            </div>  
+                            <style type="text/css">
+                     
+                                .multiselect-container {
+                                    width: 100% !important;
+                                }
+                            </style>
+                            <div class="form-group">                                
+                                <label for="reseller"><span>Реселлеры</span></label>
+                                <div> 
+                                    <select name="reseller[]" class="form-control reseller" multiple="multiple">
+                                    <repeat group="{{ @companies }}" value="{{ @company }}">
+                                        <option value="{{ @company.id }}">{{ @company.name }}</option>
+                                    </repeat>
+                                    </select>
+                                </div> 
+                            </div>
                             <div class="sub-title">Визуализация</div>
                             <div class="form-group">
                                 <label for="marker"><span>Маркер *</span></label>
@@ -82,10 +91,22 @@
 <script type="text/javascript" src="/cdn/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
 <script type="text/javascript" src="/app/views/assets/js/app/common.js"></script>
 <script type="text/javascript" src="/app/views/assets/js/app/offer.js"></script>
+<script type="text/javascript" src="/cdn/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
 <script>
-    $(function() {
+    $(function() { 
         $('.colorpicker-component').colorpicker();
-        $(".segments").select2();  
-        //$(".segments").attr("selected", "selected");
+        $(".segments").select2({ width: '100%' });
+        $(".owner").select2({ width: '100%' });
+        $('.reseller').multiselect({
+            buttonWidth: '100%',
+            numberDisplayed: 1,
+            dropRight: false,
+            enableFiltering: false,
+            includeSelectAllOption: true,
+            onChange: function(element, checked) {
+                console.log('change');
+            }
+        });   
+        $('.reseller').multiselect('select', [{{ @reseller }}]);           
     });
 </script>  

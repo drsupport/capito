@@ -15,10 +15,9 @@ class OfferController extends AdminController {
         echo $template->render('offer/create.html');
     }
     function create() {  
-    	$this->init_sqlij();
+    	//$this->init_sqlij(); не работает из за $_POST['reseller']
         $_POST['id'] = preg_replace("/[^0-9]/", '', $_POST['id']);
-        $_POST['owner'] = preg_replace("/[^0-9]/", '', $_POST['owner']);
-        $_POST['reseller'] = preg_replace("/[^0-9]/", '', $_POST['reseller']);
+        $_POST['owner'] = preg_replace("/[^0-9]/", '', $_POST['owner']);        
     	if(empty($_POST['words'])) if(!$product) $this->pushJSON(false, 'words undefined', '', 'words');    	
     	if(empty($_POST['name'])) if(!$product) $this->pushJSON(false, 'name undefined', '', 'name'); 
         if(empty($_POST['marker'])) if(!$product) $this->pushJSON(false, 'marker undefined', '', 'marker');
@@ -39,7 +38,12 @@ class OfferController extends AdminController {
  		$product = $this->db->lastInsertId();
 
         if(!empty($_POST['owner'])) $this->db->exec("INSERT IGNORE INTO `tbl_products_companies` (`id`, `product`, `company`, `owner`) VALUES (NULL, '".$product."', '".$_POST['owner']."', '1');");
-        if(!empty($_POST['reseller'])) $this->db->exec("INSERT IGNORE INTO `tbl_products_companies` (`id`, `product`, `company`, `owner`) VALUES (NULL, '".$product."', '".$_POST['reseller']."', '0');");
+        if(!empty($_POST['reseller'])) {
+            foreach ($_POST['reseller'] as $key=>$reseller) { 
+                $reseller = preg_replace("/[^0-9]/", '', $reseller);
+                $this->db->exec("INSERT IGNORE INTO `tbl_products_companies` (`id`, `product`, `company`, `owner`) VALUES (NULL, '".$product."', '".$reseller."', '0');");
+            }           
+        }
 
     	$words = explode(",", $_POST['words']);
     	$words = array_filter($words, function($element) { return !empty($element); });
@@ -70,7 +74,12 @@ class OfferController extends AdminController {
         $segments = $this->db->exec("SELECT * FROM  `tbl_segments`");
 
         $owner = $this->db->exec("SELECT * FROM  `tbl_products_companies` WHERE  `product` = ".$product." AND  `owner` = 1")[0];
-        $reseller = $this->db->exec("SELECT * FROM  `tbl_products_companies` WHERE  `product` = ".$product." AND  `owner` = 0")[0];
+
+        $resellers = $this->db->exec("SELECT * FROM  `tbl_products_companies` WHERE  `product` = ".$product." AND  `owner` = 0");
+        foreach($resellers as $key => $reseller){  
+          $resellers[$reseller['company']] = $reseller['company']; 
+          unset($resellers[$key]);
+        }            
 
         $seg = $words[0]['segment'];
     	$id = $words[0]['product_id'];
@@ -80,9 +89,11 @@ class OfferController extends AdminController {
 		$words = implode($words, ',');	
     	$template = \Template::instance(); 
   
-        if($reseller['company']) $this->f3->set('reseller', $reseller['company']);
+        //if($reseller['company']) $this->f3->set('reseller', $reseller['company']);
         if($owner['company']) $this->f3->set('owner', $owner['company']);
         if($seg) $this->f3->set('seg', $seg);
+
+        if(!empty($resellers)) $this->f3->set('reseller', implode(",", $resellers));
 
         $this->f3->set('companies', $companies);
         $this->f3->set('segments', $segments);  
