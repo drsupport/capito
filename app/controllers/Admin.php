@@ -35,6 +35,13 @@ class AdminController extends Controller {
         $nav['company']['icon'] = 'fa-users';
         $nav['company']['title'] = 'Партнерки';
 
+        $nav['segment']['href'] = '/admin/segment';
+        $nav['segment']['class'] = '';
+        $nav['segment']['icon'] = 'fa-tags';
+        $nav['segment']['title'] = 'Сегменты';
+
+        
+
         $nav['log']['href'] = '/admin/log';
         $nav['log']['class'] = '';
         $nav['log']['icon'] = 'fa-history';

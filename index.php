@@ -33,6 +33,7 @@
     require_once(__DIR__.'/app/controllers/Task.php');
     require_once(__DIR__.'/app/controllers/Test.php');
     require_once(__DIR__.'/app/controllers/Company.php');
+    require_once(__DIR__.'/app/controllers/Segment.php');
 
     $f3 = \Base::instance();    
     $f3->config('app/config/system.cfg');         
@@ -55,11 +56,11 @@
     $f3->set('DEBUG', 3);    
     $f3->set('CACHE',TRUE);   
     $f3->set('UI',__DIR__.'/app/views/'); 
-    /*
+    
     $f3->set('ONERROR',function($f3, $smtp){
         $template = \Template::instance();
         echo $template->render('404.html');   
     });
-    */
+    
     $f3->run();
 ?>

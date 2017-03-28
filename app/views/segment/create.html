@@ -1,0 +1,56 @@
+<include href="admin/header.html" />
+<link rel="stylesheet" type="text/css" href="/cdn/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+<link rel="stylesheet" type="text/css" href="/app/views/assets/css/offer.css">
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="side-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card margin-top">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="title">Новая ниша</div>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning alert-dismissible" style="display:none" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <strong>Внимание!</strong> <span class="msg"></span>
+                    </div>
+                    <div class="card-body">
+                        <form class="createForm"> 
+                            <div class="preloader"><img src="/app/views/assets/images/preloader.gif"></div>
+                            <div class="form-group">
+                                <label for="name"><span>Название *</span></label>
+                                <input type="text" name="name" class="form-control" required="" value="{{ @name }}">
+                            </div>  
+                            <div class="sub-title">Визуализация</div>
+                            <div class="form-group">
+                                <label for="marker"><span>Маркер *</span></label>
+                                <div class="input-group colorpicker-component">
+                                    
+                                    <input name="marker" type="text" value="#666666" class="form-control"/>
+                                    <span class="input-group-addon"><i></i></span>
+                                </div>   
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-default" disabled="disabled"><span style="top:1px;left:-3px;" class="glyphicon glyphicon-repeat icon-create hidden" aria-hidden="true"></span> Сохранить изменения</span></button>
+                                <a type="button" class="btn btn-default" href="/admin/segment/"><span>Отмена</span></a>
+                            </div>   
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<include href="admin/footer.html" />
+<script type="text/javascript" src="/cdn/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<script type="text/javascript" src="/app/views/assets/js/app/common.js"></script>
+<script type="text/javascript" src="/app/views/assets/js/app/segment.js"></script>
+<script>
+    $(function() {
+        $('.colorpicker-component').colorpicker();
+        $(".segments").select2();
+    });
+</script>  

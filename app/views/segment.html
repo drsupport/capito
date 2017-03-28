@@ -1,0 +1,40 @@
+<include href="admin/header.html" />
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="side-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card margin-top">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="title">Сегменты</div>
+                        </div>
+                        <div class="btn-group btn-group-md pull-right">                      
+                            <a style="border-radius:4px;" type="button" class="btn btn-info btn-run" href="/admin/segment/create"><span style="top:1px;left:-3px;" class="glyphicon glyphicon-plus icon-new" aria-hidden="true"></span> Новая ниша</span></a>                   
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ниша</th>
+                                    <th>Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <repeat group="{{ @segments }}" value="{{ @segment }}">
+                                <tr>        
+                                    <td>{{ @segment.name }}</td>    
+                                        <td><a type="button" class="btn btn-xs btn-warning" href="/admin/segment/edit/{{ @segment.id }}" style="margin-top:0px;margin-bottom:0px;">edit</a></td>
+                                </tr>
+                                </repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<include href="admin/footer.html" />
