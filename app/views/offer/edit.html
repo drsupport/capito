@@ -41,12 +41,22 @@
                                 </select>
                             </div>                            
                             <div class="form-group">
-                                <label for="owner"><span>Владелец</span></label>
-                                <input type="text" name="owner" class="form-control" value="">
+                                <label for="owner"><span>Овнер</span></label>
+                                <select name="owner" class="form-control owner">
+                                <option value="">Не выбран</option>   
+                                <repeat group="{{ @companies }}" value="{{ @company }}">  
+                                    <option {{ @company.id == @owner ? 'selected' : '' }} value="{{ @company.id }}">{{ @company.name }}</option> 
+                                </repeat>
+                                </select>
                             </div>  
                             <div class="form-group">
                                 <label for="reseller"><span>Реселлер</span></label>
-                                <input type="text" name="reseller" class="form-control" value="">
+                                <select name="reseller" class="form-control reseller">
+                                <option value="">Не выбран</option>   
+                                <repeat group="{{ @companies }}" value="{{ @company }}">   
+                                    <option {{ @company.id == @reseller ? 'selected' : '' }} value="{{ @company.id }}">{{ @company.name }}</option>
+                                </repeat>
+                                </select>
                             </div>  
                             <div class="sub-title">Визуализация</div>
                             <div class="form-group">

@@ -8,13 +8,17 @@ class OfferController extends AdminController {
     }
     function createView() {
         $segments = $this->db->exec("SELECT * FROM  `tbl_segments`");
-
+        $companies = $this->db->exec("SELECT * FROM  `tbl_companies`");
    	    $template = \Template::instance();    
         $this->f3->set('segments', $segments);
+        $this->f3->set('companies', $companies);
         echo $template->render('offer/create.html');
     }
     function create() {  
     	$this->init_sqlij();
+        $_POST['id'] = preg_replace("/[^0-9]/", '', $_POST['id']);
+        $_POST['owner'] = preg_replace("/[^0-9]/", '', $_POST['owner']);
+        $_POST['reseller'] = preg_replace("/[^0-9]/", '', $_POST['reseller']);
     	if(empty($_POST['words'])) if(!$product) $this->pushJSON(false, 'words undefined', '', 'words');    	
     	if(empty($_POST['name'])) if(!$product) $this->pushJSON(false, 'name undefined', '', 'name'); 
         if(empty($_POST['marker'])) if(!$product) $this->pushJSON(false, 'marker undefined', '', 'marker');
@@ -26,11 +30,16 @@ class OfferController extends AdminController {
 			$product = $this->db->exec("SELECT * FROM  `tbl_products` WHERE  `id` =".$_POST['id'])[0]['name'];
 			if(empty($product)) $this->pushJSON(false, 'product_id undefined', '', 'id'); 
 			$this->db->exec("DELETE FROM tbl_products_words WHERE tbl_products_words.product = ". $_POST['id']);
+            if(empty($_POST['owner'])) $this->db->exec("DELETE FROM tbl_products_companies WHERE `owner` = 1 AND `product` = ". $_POST['id']);    
+            if(empty($_POST['reseller'])) $this->db->exec("DELETE FROM tbl_products_companies WHERE `owner` = 0 AND `product` = ". $_POST['id']); 
 		}
 
  		$product = $this->db->exec("INSERT IGNORE INTO `tbl_products`(`id` , `name`, `segment`, `color`) VALUES (NULL, '".$product."', '".$_POST['segment']."', '".$_POST['marker']."') ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id);");
  		//if(!$product) $this->pushJSON(false, 'product exists', '', 'name');
  		$product = $this->db->lastInsertId();
+
+        if(!empty($_POST['owner'])) $this->db->exec("INSERT IGNORE INTO `tbl_products_companies` (`id`, `product`, `company`, `owner`) VALUES (NULL, '".$product."', '".$_POST['owner']."', '1');");
+        if(!empty($_POST['reseller'])) $this->db->exec("INSERT IGNORE INTO `tbl_products_companies` (`id`, `product`, `company`, `owner`) VALUES (NULL, '".$product."', '".$_POST['reseller']."', '0');");
 
     	$words = explode(",", $_POST['words']);
     	$words = array_filter($words, function($element) { return !empty($element); });
@@ -57,15 +66,25 @@ class OfferController extends AdminController {
     	$product = $_POST['id'];
  		$words = $this->db->exec("SELECT tbl_products_words.id, tbl_products.id AS product_id, tbl_products.name AS product, tbl_words.name AS word, tbl_products.color, tbl_products.segment FROM tbl_products_words left join tbl_words ON tbl_words.id = tbl_products_words.word left join tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product = ".$product);
     	if(!$words) $this->pushJSON(true, 'words empty');	
+        $companies = $this->db->exec("SELECT * FROM  `tbl_companies`");
         $segments = $this->db->exec("SELECT * FROM  `tbl_segments`");
+
+        $owner = $this->db->exec("SELECT * FROM  `tbl_products_companies` WHERE  `product` = ".$product." AND  `owner` = 1")[0];
+        $reseller = $this->db->exec("SELECT * FROM  `tbl_products_companies` WHERE  `product` = ".$product." AND  `owner` = 0")[0];
+
         $seg = $words[0]['segment'];
     	$id = $words[0]['product_id'];
     	$product = $words[0]['product'];
         $color = $words[0]['color'];
     	$words = array_column($words, 'word');
 		$words = implode($words, ',');	
-    	$template = \Template::instance();  
+    	$template = \Template::instance(); 
+  
+        if($reseller['company']) $this->f3->set('reseller', $reseller['company']);
+        if($owner['company']) $this->f3->set('owner', $owner['company']);
         if($seg) $this->f3->set('seg', $seg);
+
+        $this->f3->set('companies', $companies);
         $this->f3->set('segments', $segments);  
         $this->f3->set('color', $color); 
     	$this->f3->set('name', $product); 
