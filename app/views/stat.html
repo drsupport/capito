@@ -15,6 +15,20 @@
                             <form class="filtersForm" action="" method="post">    
                                 <div class="form-inline"> 
                                     <div class="form-group" style="margin-bottom:0px;">  
+                                        <select name="companies[]" class="form-control companies" multiple="multiple">
+                                            <repeat group="{{ @companies }}" value="{{ @company }}">
+                                                <option value="{{ @company.id }}">{{ @company.name }}</option>
+                                            </repeat>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0px;">  
+                                        <select name="segments[]" class="form-control segments" multiple="multiple">
+                                            <repeat group="{{ @segments }}" value="{{ @segment }}">
+                                                <option value="{{ @segment.id }}">{{ @segment.name }}</option>
+                                            </repeat>
+                                        </select>
+                                    </div>  
+                                    <div class="form-group" style="margin-bottom:0px;">  
                                         <select name="offers[]" class="form-control offers" multiple="multiple">
                                             <repeat group="{{ @offers }}" value="{{ @offer }}">
                                                 <option value="{{ @offer.id }}">{{ @offer.name }}</option>
@@ -34,21 +48,34 @@
                 <div class="card margin-top">
                     <div class="card-header">
                         <div class="card-title">
-                            <div class="title">Статистика <sup>beta</sup> <span class="description" style="padding-left: 0.4em;font-size: 0.8em;opacity: 0.8;">( 50 последних записей )</span></div>
+                            <div class="title">Статистика <sup>beta</sup> <span class="description" style="padding-left: 0.4em;font-size: 0.8em;opacity: 0.8;">( Всего {{ @weeks }} недель )</span></div>
                         </div>
+                        <div class="pull-right"> 
+                            <div class="btn-group" role="group" aria-label="Default button group">
+                                <a href="{{ @next ? '?week=' : 'javascript:void(0)' }}{{ @next }}" type="button" {{ @next ? @next : 'disabled="disabled"' }} class="btn btn-default">Предыдущая</a>
+                                <a href="javascript:void(0)" type="button" disabled="disabled" class="btn btn-default">{{ @curent }}</a>
+                                <a href="{{ @back ? '?week=' : 'javascript:void(0)' }}{{ @back }}" type="button" {{ @back ? @back : 'disabled="disabled"' }} class="btn btn-default">Следующая</a>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="card-body">
                         <table class="table table-stat">
                             <thead>
-                                <tr>
+                                <tr style="background-color: #f9f9f9;">
                                     <th>Неделя</th> 
                                     <th>Оффер</th>
                                     <th>Запросы</th>
-                                    <th>Показы</th>
+                                    <th><i class="fa fa-eye icon"></i> Показы</th>
                                                                  
                                 </tr>
                             </thead>
                             <tbody>
+                                <style>
+                                .flat-blue .table.table-striped > tbody > tr:nth-of-type(odd) {
+                                    background-color: #FDFDFD;
+                                }
+                                </style>
                                 <repeat group="{{ @stats }}" value="{{ @stat }}">
                                 <style>
                                     .table-stat thead tr:first-child th:nth-child(4){                                        
@@ -75,7 +102,7 @@
                                 <tr>    
                                     <td>{{ @stat.datetime_in }} - {{ @stat.datetime_out }}</td>    
                                     <td>
-                                        <span style="color:{{ @colors[@stat.product_id] }}">{{ @stat.product }}</span>                                   
+                                        <span style="color:{{ @stat.color }}">{{ @stat.product }}</span>                                   
                                     </td>    
                                     <td>{{ @stat.words }}</td>  
                                     <td>{{ @stat.impressions }}</td>                                    
@@ -105,7 +132,28 @@ $(function() {
             console.log('change');
         }
     });  
+    $('.segments').multiselect({
+        numberDisplayed: 1,
+        dropRight: true,
+        enableFiltering: false,
+        includeSelectAllOption: true,
+        onChange: function(element, checked) {
+            console.log('change');
+        }
+    }); 
+    $('.companies').multiselect({
+        numberDisplayed: 1,
+        dropRight: true,
+        enableFiltering: false,
+        includeSelectAllOption: true,
+        onChange: function(element, checked) {
+            console.log('change');
+        }
+    }); 
+    $('.companies').multiselect('select', [{{ @cpp }}]); 
     $('.offers').multiselect('select', [{{ @off }}]); 
+    $('.segments').multiselect('select', [{{ @sgg }}]); 
+    
 }); 
 </script>
 <script type="text/javascript" src="/app/views/assets/js/app/dynamic.js"></script>

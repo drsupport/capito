@@ -20,7 +20,9 @@ class AdminController extends Controller {
         }
 
         $nav = [];
-        $path = explode('/', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        
+
+        $path = explode('/', 'http://'.$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'?')));
         $nav['stat']['href'] = '/admin/stat';
         $nav['stat']['class'] = '';
         $nav['stat']['icon'] = 'fa-bar-chart';
@@ -38,9 +40,7 @@ class AdminController extends Controller {
         $nav['segment']['href'] = '/admin/segment';
         $nav['segment']['class'] = '';
         $nav['segment']['icon'] = 'fa-tags';
-        $nav['segment']['title'] = 'Сегменты';
-
-        
+        $nav['segment']['title'] = 'Сегменты';        
 
         $nav['log']['href'] = '/admin/log';
         $nav['log']['class'] = '';
@@ -55,6 +55,7 @@ class AdminController extends Controller {
         $nav['tasks']['icon'] = 'fa-tasks';
         $nav['tasks']['title'] = 'Планировщик';
         $nav[$path[4]]['class'] = 'class=active';
+
         $this->f3->set('nav_list', $nav);  
     }
     function index() {        

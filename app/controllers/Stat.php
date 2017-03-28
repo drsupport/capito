@@ -15,9 +15,29 @@ class StatController extends AdminController {
             ";
         }       
 
-    	$stats = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product AS product_id, tbl_products.name AS product, COUNT(*) AS words, SUM(tbl_analytic.impressions) AS impressions FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product > 0 ".$filters." GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product ORDER BY tbl_analytic.datetime_in DESC LIMIT 50");   
+        if(!empty($_GET['week'])) {
+            $nav = $this->db->exec("SELECT tbl_analytic.datetime_out FROM tbl_analytic WHERE tbl_analytic.datetime_out <= '".$_GET['week']."' GROUP BY tbl_analytic.datetime_out ORDER BY tbl_analytic.datetime_out DESC LIMIT 0,3");
+            $back = $this->db->exec("SELECT tbl_analytic.datetime_out FROM tbl_analytic WHERE tbl_analytic.datetime_out > '".$_GET['week']."' GROUP BY tbl_analytic.datetime_out ORDER BY tbl_analytic.datetime_out DESC LIMIT 0,1")[0]['datetime_out'];
+        } else {
+            $nav = $this->db->exec("SELECT SQL_CALC_FOUND_ROWS tbl_analytic.datetime_out FROM tbl_analytic GROUP BY tbl_analytic.datetime_out ORDER BY tbl_analytic.datetime_out DESC LIMIT 0,3");
+
+        }
+
+        $curent = $nav[0]['datetime_out'];
+        $next = $nav[1]['datetime_out'];
+        $pages = $this->db->exec("SELECT SQL_CALC_FOUND_ROWS tbl_analytic.datetime_out FROM tbl_analytic GROUP BY tbl_analytic.datetime_out ORDER BY tbl_analytic.datetime_out DESC");
+        $pages = $this->db->exec("SELECT FOUND_ROWS();")[0]['FOUND_ROWS()'];
+
+        /*echo 'back: '.$back.' curent: '.$curent. ' next: '.$next.' total: '.$pages;
+        die();*/
+
+        //$last_date = $this->db->exec("SELECT tbl_analytic.datetime_out FROM tbl_analytic ORDER BY tbl_analytic.datetime_out DESC LIMIT 1")[0]['datetime_out'];
+    	$stats = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product AS product_id, tbl_products.name AS product, tbl_products.color, COUNT(*) AS words, SUM(tbl_analytic.impressions) AS impressions FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_analytic.datetime_out = '".$curent."' AND tbl_products_words.product > 0  GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out, tbl_products_words.product ORDER BY SUM(tbl_analytic.impressions) DESC");   
+
  		$dates = $this->db->exec("SELECT tbl_analytic.datetime_in, tbl_analytic.datetime_out FROM tbl_analytic GROUP BY tbl_analytic.datetime_in, tbl_analytic.datetime_out ORDER BY tbl_analytic.datetime_out ASC");
  		$offers = $this->db->exec("SELECT tbl_products_words.product AS id, tbl_products.name FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product > 0 ".$filters." GROUP BY tbl_products_words.product");
+        $segments = $this->db->exec("SELECT * FROM  `tbl_segments`");
+        $companies = $this->db->exec("SELECT * FROM  `tbl_companies`");
 
  		foreach($dates as $key => $date){  		
  			array_push($labels, date("d.m", strtotime(trim($date['datetime_in']))).'-'.date("d.m", strtotime(trim($date['datetime_out']))).'('.date("Y", strtotime(trim($date['datetime_out']))).')'); 			
@@ -53,7 +73,16 @@ class StatController extends AdminController {
         $offers = $this->db->exec("SELECT tbl_products_words.product AS id, tbl_products.name FROM tbl_analytic LEFT JOIN tbl_products_words ON tbl_products_words.word = tbl_analytic.word LEFT JOIN tbl_products ON tbl_products.id = tbl_products_words.product WHERE tbl_products_words.product > 0 GROUP BY tbl_products_words.product");
 
         if($_POST['offers']) $this->f3->set('off', implode(",", $_POST['offers']));
+        if($_POST['segments']) $this->f3->set('sgg', implode(",", $_POST['segments']));
+
+        $this->f3->set('back', $back); 
+        $this->f3->set('next', $next);
+        $this->f3->set('curent', $curent);
+    
+        $this->f3->set('weeks', $pages); 
         $this->f3->set('offers', $offers);  
+        $this->f3->set('segments', $segments);  
+        $this->f3->set('companies', $companies); 
         $this->f3->set('stats', $stats);   
         $this->f3->set('labels', json_encode($labels));   
         $this->f3->set('datasets', json_encode($datasets));  
