@@ -29,10 +29,16 @@ class AdminController extends Controller {
         $nav['offer']['class'] = '';
         $nav['offer']['icon'] = 'fa-briefcase';
         $nav['offer']['title'] = 'Офферы';
+
+        $nav['company']['href'] = '/admin/company';
+        $nav['company']['class'] = '';
+        $nav['company']['icon'] = 'fa-users';
+        $nav['company']['title'] = 'Партнерки';
+
         $nav['log']['href'] = '/admin/log';
         $nav['log']['class'] = '';
         $nav['log']['icon'] = 'fa-history';
-        $nav['log']['title'] = 'Парсинг';
+        $nav['log']['title'] = 'Парсеры';
         $nav['setting']['href'] = '/admin/setting';
         $nav['setting']['class'] = '';
         $nav['setting']['icon'] = 'fa-cog';

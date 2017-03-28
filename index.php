@@ -32,6 +32,7 @@
     require_once(__DIR__.'/app/controllers/Setting.php');
     require_once(__DIR__.'/app/controllers/Task.php');
     require_once(__DIR__.'/app/controllers/Test.php');
+    require_once(__DIR__.'/app/controllers/Company.php');
 
     $f3 = \Base::instance();    
     $f3->config('app/config/system.cfg');         
