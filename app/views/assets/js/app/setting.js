@@ -89,7 +89,7 @@ function validateTxt(txt) {
     return true;
 }
 function validateBrief(f) {
-    if (!validateEmail(f.elements['login'].value) || !validateTxt(f.elements['password'].value)) {
+    if (!validateEmail(f.elements['login'].value) || !validateTxt(f.elements['password'].value) || !validateTxt(f.elements['token'].value)) {
         return false;
     }
     return true;   
@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function(){
     var e = document.querySelector('[type="submit"]');
 
     f.addEventListener("keyup", function(event) {
-        console.log('key');
         event.preventDefault();          
         e.disabled = false;
         /*
@@ -113,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function(){
             e.disabled = true;            
         }
         */
+        
     });
     f.addEventListener("submit", function(event) {
         console.log('submit');        

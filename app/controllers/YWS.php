@@ -1,4 +1,4 @@
- <?php
+  <?php
 class YWSController extends Controller {
 	function parse_wordstat($keyword) {  
 		$url = 'https://wordstat.yandex.ru/#!/?words='.urlencode($keyword);
@@ -27,9 +27,19 @@ class YWSController extends Controller {
     	if(!$word) $this->pushJSON(false, "words empty");
     	$time = date('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"))); 		
 		$this->db->exec("INSERT INTO `tbl_logs`( `id` , `datetime` , `status`, `query`, `response`, `word`) VALUES ( NULL , '".$time."', '0', '', '', '".$word['id']."');");
-		$log = $this->db->lastInsertId();	
-        $setting = $this->db->exec("SELECT * FROM  `tbl_settings`")[0];               
-		$query = './vendor/drsupport/parser.yws/vendor/ariya/phantomjs/bin/phantomjs --web-security=no ./vendor/drsupport/parser.yws/yws.js 003fa7c1cd658bca6016eae7c179f012 ivanov.vladimir.v sp@rt@nec "'.$word['name'].'" "" "weekly" "" 2>&1';
+		$log = $this->db->lastInsertId();
+			
+        $settings = $this->db->exec("SELECT * FROM  `tbl_settings`");    
+        foreach($settings as $key => $setting){  
+          $settings[$setting['key']] = $setting; 
+          unset($settings[$key]);
+        }    
+
+        if(empty($settings['anticaptcha']['value1'])) $this->pushJSON(false, 'invalid anticaptcha token'); 
+        if(empty($settings['yandex']['value1'])) $this->pushJSON(false, 'invalid yandex login');
+        if(empty($settings['yandex']['value2'])) $this->pushJSON(false, 'invalid yandex password');
+
+		$query = './vendor/drsupport/parser.yws/vendor/ariya/phantomjs/bin/phantomjs --web-security=no ./vendor/drsupport/parser.yws/yws.js '.$settings['anticaptcha']['value1'].' '.$settings['yandex']['value1'].' '.$settings['yandex']['value2'].' "'.$word['name'].'" "" "weekly" "" 2>&1';
 		$this->db->exec("UPDATE  `tbl_logs` SET  `query` =  '".$query."' WHERE  `tbl_logs`.`id` =".$log.";"); 
 		putenv('LANG=en_US.UTF-8'); 
         $response = shell_exec($query);  
