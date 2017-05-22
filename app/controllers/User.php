@@ -10,7 +10,8 @@ class UserController extends Controller {
 		$auth = $this->db->exec("SELECT * FROM `tbl_users` WHERE `user_login` LIKE '".$_POST['login']."'")[0];
 		if(!$auth) $this->pushJSON(false, "login invalid");
 		if(empty($_POST['password'])) $this->pushJSON(false, "password required");
-				echo $auth['user_password'].' / ';
+		
+		echo $auth['user_password'].' / ';
 		echo md5(md5($_POST['password']));
 		die();
 
