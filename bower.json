@@ -17,6 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "flat-admin-bootstrap-templates": "git://github.com/tui2tone/flat-admin-bootstrap-templates.git#dev-v2"
+    "flat-admin-bootstrap-templates": "https://gitlab.com/opendrcash/flat-admin-bootstrap-templates.git"
   }
 }
