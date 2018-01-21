@@ -18,10 +18,10 @@
 	    {
 	        "type":"package",
 	        "package": {
-	          "name": "drsupport/parser.yws",
+	          "name": "seavalley/parser.yws",
 	          "version":"master",
 	          "source": {
-	              "url": "https://github.com/drsupport/parser.yws.git",
+	              "url": "https://github.com/seavalley/parser.yws.git",
 	              "type": "git",
 	              "reference":"master"
 	            }
@@ -32,7 +32,7 @@
     	"bcosca/fatfree": "^3.5",
         "hundredminds/ipgeobase": "^1.03",
         "ipgeobase/data" : "1.0",
-        "drsupport/parser.yws" : "master",
+        "seavalley/parser.yws" : "master",
         "tiben/crontab-manager" : "~1.0",
 		"mistic100/randomcolor": "^1.0"
     }
